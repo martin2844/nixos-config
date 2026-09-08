@@ -11,10 +11,6 @@
   Installers and proprietary application binaries are not committed here.
 - Neovim plugins use LazyVim's lockfile and are fetched by Lazy. The native Blink
   plugin comes from nixpkgs; Nix tools and Blink are built by install-user.py.
-- The wallpaper script retains the original kdialog store path. The pinned
-  system includes Plasma/kdialog; changing nixpkgs may require replacing that
-  path or declaring a dedicated wrapper. No desktop behavior was changed merely
-  to create this repository.
 - Plasma's personal session state, browser profiles, keyrings, application data,
   Bluetooth pairings, NetworkManager connection secrets, and Tailscale login
   state are not tracked. The system modules enabling those services are tracked.

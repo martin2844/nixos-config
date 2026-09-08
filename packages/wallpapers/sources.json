@@ -1,0 +1,29 @@
+[
+  {
+    "name": "10-Uranus-and-rings",
+    "id": "weic2332b",
+    "url": "https://cdn.esawebb.org/archives/images/large/weic2332b.jpg",
+    "hash": "sha256-pu9pfGyji4gotqGz9ms87t9TSUrm5W28FE7cC/ix3lY=",
+    "source": "https://esawebb.org/images/weic2332b/",
+    "credit": "NASA, ESA, CSA, STScI",
+    "license": "CC-BY-4.0"
+  },
+  {
+    "name": "11-Tarantula-Nebula",
+    "id": "weic2212a",
+    "url": "https://cdn.esawebb.org/archives/images/publicationjpg/weic2212a.jpg",
+    "hash": "sha256-siz6Id5vsn5StQNCnzROjzwYmVxNW31XHQZwL683alc=",
+    "source": "https://esawebb.org/images/weic2212a/",
+    "credit": "NASA, ESA, CSA, and STScI",
+    "license": "CC-BY-4.0"
+  },
+  {
+    "name": "12-Cosmic-Cliffs",
+    "id": "weic2205a",
+    "url": "https://cdn.esawebb.org/archives/images/publicationjpg/weic2205a.jpg",
+    "hash": "sha256-DDbrDR18ywl2UolelZfMBnijUUirSUaXo4fxpViJIw8=",
+    "source": "https://esawebb.org/images/weic2205a/",
+    "credit": "NASA, ESA, CSA, and STScI",
+    "license": "CC-BY-4.0"
+  }
+]

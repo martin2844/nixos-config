@@ -1,0 +1,12 @@
+--- a/waypaper/changer.py
++++ b/waypaper/changer.py
+@@ -2,0 +3 @@
++import shlex
+@@ -406 +407 @@
+-            modified_image_path = str(image_path).replace(" ", "\\ ")
++            modified_image_path = shlex.quote(str(image_path))
+--- a/waypaper/config.py
++++ b/waypaper/config.py
+@@ -124 +124 @@
+-        if not self.use_xdg_state:
++        if not self.use_xdg_state or not self.state_file.exists():

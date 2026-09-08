@@ -11,7 +11,8 @@ parser.add_argument('--build-only', action='store_true', help='build without cha
 args = parser.parse_args()
 nix = ['nix', '--extra-experimental-features', 'nix-command']
 packages = {'chatgpt-desktop': 'chatgpt', 'nmgui': 'internet-panel',
-            'lazyvim-development-tools': 'nvim-tools', 'networkmanager_dmenu': 'network-menu'}
+            'lazyvim-development-tools': 'nvim-tools', 'networkmanager_dmenu': 'network-menu',
+            'desktop-wallpapers': 'wallpapers', 'desktop-wallpaper-tools': 'wallpaper-tools'}
 outputs = {}
 for name, attr in packages.items():
     outputs[name] = subprocess.check_output(

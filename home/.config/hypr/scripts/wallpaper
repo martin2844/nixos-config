@@ -1,17 +1,26 @@
 #!/run/current-system/sw/bin/bash
 set -euo pipefail
-if [[ $# -gt 0 ]]; then
-    file=$1
-else
-    file=$(/nix/store/62p3viqkci7aa1qiq63afvs8ps1bgfqj-kdialog-26.04.3/bin/kdialog \
-        --title 'Choose desktop wallpaper' --getopenfilename "$HOME/Pictures" \
-        '*.png *.jpg *.jpeg *.webp *.bmp | Wallpaper images') || exit 0
+if [[ $# -eq 0 ]]; then
+    exec wallpaper-gallery
 fi
+file=$1
+# Serialize updates when clicking several thumbnails quickly.
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/wallpaper-$UID.lock"
+flock 9
 [[ -f "$file" ]] || exit 1
 extension=${file##*.}
 case "${extension,,}" in png|jpg|jpeg|webp|bmp) extension=${extension,,} ;; *) exit 1 ;; esac
 image="$HOME/.config/hypr/wallpaper-custom.$extension"
-if [[ $(realpath "$file") != "$image" ]]; then cp -- "$file" "$image"; fi
+if [[ $(realpath "$file") != "$image" ]]; then
+    # Nix-sourced images can be read-only. Replace atomically instead of writing
+    # through the previous file, so selecting the next image still works.
+    image_temp=$(mktemp "$HOME/.config/hypr/.wallpaper.XXXXXX")
+    trap 'rm -f -- "$image_temp"' EXIT
+    cp -- "$file" "$image_temp"
+    chmod 0644 "$image_temp"
+    mv -- "$image_temp" "$image"
+    trap - EXIT
+fi
 config="$HOME/.config/hypr/hyprpaper.conf"
 temp=$(mktemp "$config.XXXXXX")
 printf 'splash = false\nwallpaper {\n    monitor =\n    path = %s\n    fit_mode = cover\n}\n' "$image" > "$temp"

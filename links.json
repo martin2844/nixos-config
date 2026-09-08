@@ -16,5 +16,6 @@
   "hyprland-setup/internet-panel": "packages/internet-panel",
   ".config/gtk-3.0": "home/.config/gtk-3.0",
   ".config/gtk-4.0": "home/.config/gtk-4.0",
-  ".config/xsettingsd": "home/.config/xsettingsd"
+  ".config/xsettingsd": "home/.config/xsettingsd",
+  ".config/waypaper": "home/.config/waypaper"
 }

@@ -38,3 +38,12 @@ hl.window_rule({
     size = "850 650",
     center = true,
 })
+
+-- Thumbnail wallpaper gallery, kept off the tiling grid.
+hl.window_rule({
+    name = "wallpaper-gallery",
+    match = { class = "^[Ww]aypaper$" },
+    float = true,
+    size = "1100 760",
+    center = true,
+})

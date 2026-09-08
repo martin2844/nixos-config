@@ -57,6 +57,8 @@ ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
 - `packages/internet-panel/`: nixpkgs nmgui with the custom Ethernet section.
 - `packages/chatgpt/`: Debian repackaging and the Qt plugin startup fix.
 - `packages/nvim-tools/`: Nix language servers/tools and native Blink plugin.
+- `packages/wallpapers/` and `packages/wallpaper-tools/`: curated image sources,
+  Waypaper gallery, and the persistent Hyprpaper bridge.
 - `nix/`: hash-pinned nixpkgs channel, shared by system and package builds.
 - `links.json`: explicit mapping of live user paths into this repository.
 - `docs/`: captured versions, original user-profile inventory, and limitations.
@@ -94,14 +96,17 @@ nix-shell -p python3 --run 'python3 scripts/install-user.py'
 
 Linking backs up existing destinations under
 `~/.local/state/nixos-config/backups/<timestamp>/`. Nothing is deleted. Package
-installation builds all outputs before replacing the four managed profile entries;
+installation builds all outputs before replacing the managed profile entries;
 other profile entries are retained. Log into Hyprland UWSM to start the desktop.
 For a running session, `hyprctl reload` reloads compositor configuration; restart
 Waybar separately after changing its config.
 
 Wallpaper files are tracked under `home/.config/hypr/`. The wallpaper picker
 writes there through the directory symlink, so changing it produces a Git diff.
-The wallpaper helper currently references a store-path kdialog; see limitations.
+**Super+Ctrl+Space** opens the thumbnail gallery. Twelve predefined space/abstract/
+Plasma images are built by Nix; add personal images to `~/Pictures/Wallpapers`.
+See [wallpaper gallery](packages/wallpaper-tools/README.md) and
+[image credits](packages/wallpapers/CREDITS.md).
 
 ## Version control
 
