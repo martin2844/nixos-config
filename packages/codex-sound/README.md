@@ -1,8 +1,10 @@
 # Codex completion sound
 
 `codex-complete-sound` accepts Codex's notify JSON argument, filters for
-`agent-turn-complete`, and plays the freedesktop completion sound through
-PipeWire at half volume. Playback failure never interrupts Codex.
+`agent-turn-complete`, and plays an original three-note rising “tu-lu-lú” through
+PipeWire at half volume. The 0.625-second WAV is synthesized during the Nix build
+from `generate-tone.py`, with soft attacks and releases; no audio binary or
+download is stored in Git. Playback failure never interrupts Codex.
 
 The user installer automatically runs `scripts/configure-codex-sound.py`
 after installing the packages (never in build-only mode). It can also be run
