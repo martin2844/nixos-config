@@ -60,7 +60,11 @@ class Panel(Gtk.Application):
         css = Gtk.CssProvider()
         css.load_from_data(b'''window { background: #20252e; color: #e5e9ef; border: 1px solid #56677d; border-radius: 9px; }
         button { background: #303a48; color: #e5e9ef; border: 0; border-radius: 5px; padding: 7px; }
-        button:hover { background: #46566a; } label { color: #e5e9ef; }''')
+        button:hover { background: #46566a; } label { color: #e5e9ef; }
+        frame.workspace-group { border: 1px solid #495362; border-radius: 7px; padding: 6px; }
+        frame.workspace-group.active { border-color: #91a7bf; }
+        frame.workspace-group > border { border: none; }
+        frame.workspace-group label { font-weight: normal; }''')
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin=16)
         self.window.add(self.box)
@@ -105,12 +109,7 @@ class Panel(Gtk.Application):
             scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
             scroll.set_propagate_natural_height(True)
             scroll.set_max_content_height(500)
-            windows = Gtk.FlowBox()
-            windows.set_selection_mode(Gtk.SelectionMode.NONE)
-            windows.set_min_children_per_line(5)
-            windows.set_max_children_per_line(5)
-            windows.set_row_spacing(8)
-            windows.set_column_spacing(8)
+            windows = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
             desktop_apps = Gio.AppInfo.get_all()
             def desktop_app(app_class):
                 key = app_class.casefold()
@@ -125,7 +124,26 @@ class Panel(Gtk.Application):
             try:
                 clients = json.loads(run('hyprctl', 'clients', '-j'))
                 clients.sort(key=lambda c: (c['workspace']['id'], c.get('class', '').lower()))
+                active_workspace = json.loads(run('hyprctl', 'activeworkspace', '-j'))['id']
+                groups = {}
                 for client in clients:
+                    workspace_id = client['workspace']['id']
+                    if workspace_id not in groups:
+                        name = client['workspace']['name']
+                        active = workspace_id == active_workspace
+                        frame = Gtk.Frame(label='Workspace ' + name + (' · actual' if active else ''))
+                        frame.get_style_context().add_class('workspace-group')
+                        if active:
+                            frame.get_style_context().add_class('active')
+                        grid = Gtk.FlowBox()
+                        grid.set_selection_mode(Gtk.SelectionMode.NONE)
+                        grid.set_min_children_per_line(5)
+                        grid.set_max_children_per_line(5)
+                        grid.set_row_spacing(6)
+                        grid.set_column_spacing(6)
+                        frame.add(grid)
+                        windows.pack_start(frame, False, False, 0)
+                        groups[workspace_id] = grid
                     button = Gtk.Button()
                     content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
                     app_class = client.get('class', 'Aplicación')
@@ -136,13 +154,12 @@ class Panel(Gtk.Application):
                                else Gtk.Image.new_from_icon_name('application-x-executable', Gtk.IconSize.DIALOG))
                     picture.set_pixel_size(32)
                     content.pack_start(picture, False, False, 0)
-                    content.pack_start(Gtk.Label(label=workspace), False, False, 0)
-                    button.set_size_request(64, 68)
+                    button.set_size_request(60, 54)
                     button.add(content)
                     name = app.get_name() if app else app_class
                     button.set_tooltip_text(name + ' · Workspace ' + workspace + '\n' + client.get('title', name))
                     button.connect('clicked', lambda _, a=client['address']: self.focus_window(a))
-                    windows.add(button)
+                    groups[workspace_id].add(button)
                 if not clients:
                     windows.add(Gtk.Label(label='No hay ventanas abiertas.'))
             except (subprocess.SubprocessError, ValueError, KeyError, OSError) as exc:

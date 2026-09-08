@@ -29,3 +29,8 @@ StartupWMClass, with a generic fallback. It deliberately stays open across focus
 changes so moving from Waybar into it cannot dismiss it. Selection, Escape, X or
 clicking the bar button again closes it. Selecting an icon focuses that window
 and follows it to its current workspace, without moving the window.
+
+Window icons are grouped inside one outlined frame per occupied workspace. Each
+frame has a workspace heading; the current workspace has a brighter outline.
+Long groups wrap and the picker scrolls when needed. Individual icons retain
+window-title tooltips and focus their original window without moving it.
