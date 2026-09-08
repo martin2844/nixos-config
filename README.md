@@ -37,6 +37,9 @@ persistent even in test mode. Keep the checkout: live config directories link to
 ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
 `latest` download may stop being available; see [limitations](docs/LIMITATIONS.md).
 
+Slack is installed in the managed user profile from pinned nixpkgs. Open Slack
+from the application launcher and sign in to your workspace after installation.
+
 ## Custom software included
 
 - [Codex usage indicator](packages/codex-usage/): Waybar shows the remaining

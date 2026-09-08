@@ -17,6 +17,7 @@ packages = {'chatgpt-desktop': 'chatgpt', 'nmgui': 'internet-panel',
 packages['desktop-controls'] = 'desktop-controls'
 outputs = {}
 packages['hyprmod'] = 'hyprmod'
+packages['slack'] = 'slack'
 packages['omarchy-screenshot-preview'] = 'screenshot-preview'
 packages['desktop-zsh'] = 'zsh'
 packages['codex-complete-sound'] = 'codex-sound'

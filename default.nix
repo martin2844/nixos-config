@@ -7,6 +7,7 @@ in
       configuration = ./hosts/nixos/configuration.nix;
     }).system;
   chatgpt = import ./packages/chatgpt { inherit pkgs; };
+  slack = pkgs.slack;
   internet-panel = import ./packages/internet-panel { inherit pkgs; };
   nvim-tools = import ./packages/nvim-tools { inherit pkgs; };
   nvim-blink = import ./packages/nvim-tools/blink.nix { inherit pkgs; };
