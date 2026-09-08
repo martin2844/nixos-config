@@ -20,4 +20,5 @@ in
   desktop-theme = import ./packages/desktop-theme { inherit pkgs; };
   zsh = import ./packages/zsh { inherit pkgs; };
   codex-sound = import ./packages/codex-sound { inherit pkgs; };
+  codex-usage = import ./packages/codex-usage { inherit pkgs; };
 }

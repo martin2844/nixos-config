@@ -20,6 +20,7 @@ packages['hyprmod'] = 'hyprmod'
 packages['omarchy-screenshot-preview'] = 'screenshot-preview'
 packages['desktop-zsh'] = 'zsh'
 packages['codex-complete-sound'] = 'codex-sound'
+packages['codex-usage'] = 'codex-usage'
 packages['desktop-theme'] = 'desktop-theme'
 for name, attr in packages.items():
     outputs[name] = subprocess.check_output(

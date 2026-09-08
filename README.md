@@ -39,6 +39,10 @@ ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
 
 ## Custom software included
 
+- [Codex usage indicator](packages/codex-usage/): Waybar shows the remaining
+  Codex allowance and available resets, with renewal and expiry dates in the
+  tooltip. Installed by the user-package installer; uses your Codex CLI login.
+
 - [Codex completion sound](packages/codex-sound/): the installer configures a
   sound after each completed response and disables Codex's desktop toasts.
 - [Screenshot preview](packages/screenshot-preview/): draggable bottom-right

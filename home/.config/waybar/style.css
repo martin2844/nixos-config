@@ -30,6 +30,11 @@ tooltip label { font-size: 12px; padding: 6px; }
 
 /* Keep the usage percentages as compact as the clock text. */
 #cpu, #memory { font-size: 12px; }
+#custom-codex { padding: 0 8px; color: #a2b5ca; border-radius: 5px; }
+#custom-codex:hover { background: #303a48; }
+#custom-codex.warning { color: #e5bd78; }
+#custom-codex.critical { color: #f08080; }
+#custom-codex.unavailable { color: #8993a2; }
 
 #custom-separator { color: #56616f; margin: 0 9px; }
 #tray.network { padding: 0 9px; }
