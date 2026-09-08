@@ -48,3 +48,12 @@ hl.window_rule({
     size = "1100 760",
     center = true,
 })
+
+-- Advanced device settings opened from the status-bar popups.
+hl.window_rule({
+    name = "desktop-device-settings",
+    match = { class = "^(org\\.pulseaudio\\.pavucontrol|Pavucontrol|pavucontrol|blueman-manager|dev\\.deedles\\.Trayscale)$" },
+    float = true,
+    size = "780 600",
+    center = true,
+})

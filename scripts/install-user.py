@@ -12,8 +12,11 @@ args = parser.parse_args()
 nix = ['nix', '--extra-experimental-features', 'nix-command']
 packages = {'chatgpt-desktop': 'chatgpt', 'nmgui': 'internet-panel',
             'lazyvim-development-tools': 'nvim-tools', 'networkmanager_dmenu': 'network-menu',
-            'desktop-wallpapers': 'wallpapers', 'desktop-wallpaper-tools': 'wallpaper-tools'}
+            'desktop-wallpapers': 'wallpapers', 'desktop-wallpaper-tools': 'wallpaper-tools', 'waybar': 'waybar'}
+packages['desktop-controls'] = 'desktop-controls'
 outputs = {}
+packages['desktop-zsh'] = 'zsh'
+packages['desktop-theme'] = 'desktop-theme'
 for name, attr in packages.items():
     outputs[name] = subprocess.check_output(
         ['nix-build', str(repo), '-A', attr, '-o', str(repo / ('result-' + attr))], text=True).strip()

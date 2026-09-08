@@ -1,0 +1,32 @@
+--- a/src/modules/hyprland/workspace.cpp
++++ b/src/modules/hyprland/workspace.cpp
+@@ -72,5 +72,5 @@
+-      if (id() > 0) {  // normal
+-        if (m_workspaceManager.moveToMonitor()) {
+-          m_ipc.getSocket1Reply("dispatch focusworkspaceoncurrentmonitor " + std::to_string(id()));
+-        } else {
+-          m_ipc.getSocket1Reply("dispatch workspace " + std::to_string(id()));
++      // Hyprland 0.55 uses typed Lua dispatchers on the control socket.
++      auto luaString = [](const std::string& value) {
++        std::string quoted = "\"";
++        for (unsigned char c : value) {
++          quoted += "\\" + std::to_string(1000 + c).substr(1);
+@@ -78,10 +78,8 @@
+-      } else if (!isSpecial()) {  // named (this includes persistent)
+-        if (m_workspaceManager.moveToMonitor()) {
+-          m_ipc.getSocket1Reply("dispatch focusworkspaceoncurrentmonitor name:" + name());
+-        } else {
+-          m_ipc.getSocket1Reply("dispatch workspace name:" + name());
+-        }
+-      } else if (id() != -99) {  // named special
+-        m_ipc.getSocket1Reply("dispatch togglespecialworkspace " + name());
+-      } else {  // special
+-        m_ipc.getSocket1Reply("dispatch togglespecialworkspace");
++        return quoted + "\"";
++      };
++      if (id() > 0) {
++        m_ipc.getSocket1Reply("dispatch hl.dsp.focus({workspace = " + std::to_string(id()) + "})");
++      } else if (!isSpecial()) {
++        m_ipc.getSocket1Reply("dispatch hl.dsp.focus({workspace = " + luaString("name:" + name()) + "})");
++      } else {
++        m_ipc.getSocket1Reply("dispatch hl.dsp.workspace.toggle_special(" + luaString(id() == -99 ? "" : name()) + ")");

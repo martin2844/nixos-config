@@ -42,6 +42,7 @@ fi
 sudo -v
 "$python/bin/python3" "$repo/scripts/install-user.py"
 "$python/bin/python3" "$repo/scripts/link-home.py" --apply
+"$HOME/.nix-profile/bin/desktop-theme"
 mkdir -p "$HOME/Pictures/Screenshots"
 "$repo/scripts/rebuild" "${mode#--}"
 printf '\nInstallation complete. Select Hyprland (UWSM) or Plasma in SDDM.\n'

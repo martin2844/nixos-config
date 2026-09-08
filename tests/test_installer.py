@@ -42,7 +42,7 @@ fi
     def test_check_builds_everything_without_installing(self):
         result, log, home_created = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stderr)
-        for attr in ['system', 'chatgpt', 'internet-panel', 'nvim-tools', 'nvim-blink', 'network-menu', 'wallpapers', 'wallpaper-tools']:
+        for attr in ['system', 'chatgpt', 'internet-panel', 'nvim-tools', 'nvim-blink', 'network-menu', 'wallpapers', 'wallpaper-tools', 'waybar', 'desktop-controls', 'zsh', 'desktop-theme']:
             self.assertIn('-A ' + attr + ' ', log)
         self.assertNotIn('FORBIDDEN', log)
         self.assertFalse(home_created)

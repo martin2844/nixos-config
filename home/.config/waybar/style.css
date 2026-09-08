@@ -8,3 +8,35 @@ window#waybar { background: #1b2028; color: #e5e9ef; border-bottom: 1px solid #3
 #clock { font-weight: bold; }
 #tray, #network, #bluetooth, #pulseaudio, #cpu, #memory, #battery, #custom-notifications { padding: 0 9px; }
 #network.disconnected, #pulseaudio.muted { color: #d6ab94; }
+
+/* Compact, evenly spaced controls; icon glyphs need room beyond a text cell. */
+.modules-right { margin-right: 10px; }
+#network, #bluetooth, #pulseaudio, #cpu, #memory,
+#custom-notifications, #custom-settings {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 17px;
+    min-width: 24px;
+    padding: 0 7px;
+    margin: 3px 0;
+    border-radius: 5px;
+}
+#custom-settings { margin-right: 3px; }
+#network:hover, #bluetooth:hover, #pulseaudio:hover,
+#custom-notifications:hover, #custom-settings:hover { background: #303a48; }
+#bluetooth.off, #bluetooth.disabled, #network.disconnected { color: #8993a2; }
+#bluetooth.connected { color: #a2b5ca; }
+tooltip { background: #20252e; border: 1px solid #56677d; border-radius: 6px; }
+tooltip label { font-size: 12px; padding: 6px; }
+
+/* Keep the usage percentages as compact as the clock text. */
+#cpu, #memory { font-size: 12px; }
+
+#custom-separator { color: #56616f; margin: 0 9px; }
+#tray.network { padding: 0 9px; }
+#custom-tailscale { font-size: 17px; padding: 0 8px; min-width: 24px; }
+#custom-tailscale.disconnected { color: #8993a2; }
+#custom-tailscale:hover { background: #303a48; border-radius: 5px; }
+
+/* Notification tray and a single dropdown for all open windows. */
+#custom-windows { padding: 0 8px; font-size: 17px; border-radius: 5px; }
+#custom-windows:hover { background: #303a48; }

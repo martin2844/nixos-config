@@ -2,7 +2,7 @@
   "layer": "top",
   "position": "top",
   "height": 34,
-  "spacing": 4,
+  "spacing": 2,
   "modules-left": [
     "hyprland/workspaces",
     "hyprland/window"
@@ -11,17 +11,19 @@
     "clock"
   ],
   "modules-right": [
-    "tray",
-    "network",
+    "tray#apps",
+    "custom/windows",
+    "custom/separator",
+    "tray#network",
     "bluetooth",
     "pulseaudio",
+    "custom/tailscale",
     "cpu",
     "memory",
     "custom/notifications"
   ],
   "hyprland/workspaces": {
     "format": "{id}",
-    "on-click": "activate",
     "all-outputs": true,
     "disable-scroll": true,
     "persistent-workspaces": {
@@ -36,44 +38,99 @@
     "format": "{:%a %d %b  %H:%M}",
     "tooltip-format": "<tt>{calendar}</tt>"
   },
-  "tray": {
-    "icon-size": 18,
-    "spacing": 8
-  },
   "bluetooth": {
-    "format": "BT {status}",
-    "format-connected": "BT {num_connections}",
-    "on-click": "uwsm app -- blueman-manager"
+    "format": "",
+    "format-connected": "󰂱",
+    "on-click": "uwsm app -- /home/martin/.nix-profile/bin/desktop-controls bluetooth",
+    "format-on": "",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-no-controller": "󰂲",
+    "tooltip-format": "Bluetooth: {status}\nClic: gestionar dispositivos",
+    "tooltip-format-connected": "Bluetooth: {num_connections} conectado(s)\n{device_enumerate}"
   },
   "pulseaudio": {
-    "format": "Vol {volume}%",
-    "format-muted": "Muted",
-    "on-click": "uwsm app -- pavucontrol",
+    "format": "{icon}",
+    "format-muted": "󰝟",
+    "on-click": "uwsm app -- /home/martin/.nix-profile/bin/desktop-controls audio",
     "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-    "scroll-step": 5
+    "scroll-step": 5,
+    "format-icons": {
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ],
+      "headphone": "󰋋"
+    },
+    "tooltip-format": "Volumen: {volume}%\n{desc}\nClic: controles · Clic derecho: silenciar"
   },
   "cpu": {
-    "format": "CPU {usage}%",
-    "interval": 5
+    "format": " {usage}%",
+    "interval": 5,
+    "tooltip-format": "CPU: {usage}%"
   },
   "memory": {
-    "format": "RAM {percentage}%",
-    "interval": 5
+    "format": " {percentage}%",
+    "interval": 5,
+    "tooltip-format": "RAM: {used:0.1f} / {total:0.1f} GiB ({percentage}%)"
   },
   "custom/notifications": {
-    "format": "Notifications",
+    "format": "󰂚",
     "on-click": "swaync-client -t",
-    "tooltip": false
+    "tooltip": true,
+    "tooltip-format": "Notificaciones"
   },
   "network": {
-    "format-ethernet": "Ethernet",
-    "format-wifi": "Wi-Fi {signalStrength}%",
-    "format-disconnected": "Offline",
-    "format-linked": "Connecting",
+    "format-ethernet": "󰈀",
+    "format-wifi": "󰤨",
+    "format-disconnected": "󰤭",
+    "format-linked": "󰤫",
     "tooltip-format": "{ifname}: {ipaddr}\nClick for Ethernet and Wi-Fi",
-    "tooltip-format-disconnected": "Click for Ethernet and Wi-Fi",
+    "tooltip-format-disconnected": "Sin conexión\nClic: Ethernet y Wi-Fi",
     "on-click": "uwsm app -- /home/martin/.nix-profile/bin/nmgui",
     "on-click-right": "uwsm app -- nm-connection-editor",
-    "interval": 5
+    "interval": 5,
+    "tooltip-format-ethernet": "Ethernet · {ifname}\n{ipaddr}\nClic: Ethernet y Wi-Fi",
+    "tooltip-format-wifi": "Wi-Fi · {essid}\nSeñal: {signalStrength}% · {ipaddr}\nClic: Ethernet y Wi-Fi"
+  },
+  "tray#apps": {
+    "icon-size": 18,
+    "spacing": 10,
+    "ignored-items": [
+      "/org/ayatana/NotificationItem/nm_applet",
+      "/org/blueman/sni",
+      "/org/ayatana/NotificationItem/steam"
+    ],
+    "icons": {
+      "nm-applet": "/home/martin/.config/waybar/icons/network.svg"
+    }
+  },
+  "tray#network": {
+    "icon-size": 18,
+    "spacing": 10,
+    "ignored-items": [],
+    "icons": {
+      "nm-applet": "/home/martin/.config/waybar/icons/network.svg"
+    },
+    "allowed-items": [
+      "/org/ayatana/NotificationItem/nm_applet"
+    ]
+  },
+  "custom/separator": {
+    "format": "│",
+    "tooltip": false
+  },
+  "custom/tailscale": {
+    "exec": "/home/martin/.nix-profile/bin/desktop-controls tailscale-status",
+    "return-type": "json",
+    "interval": 10,
+    "format": "{text}",
+    "on-click": "uwsm app -- trayscale"
+  },
+  "custom/windows": {
+    "format": "󰍜",
+    "tooltip-format": "Ventanas abiertas · desplegar lista",
+    "on-click": "uwsm app -- /home/martin/.nix-profile/bin/desktop-controls windows"
   }
 }

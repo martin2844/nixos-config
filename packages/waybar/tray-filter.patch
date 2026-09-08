@@ -1,0 +1,18 @@
+--- a/src/modules/sni/host.cpp
++++ b/src/modules/sni/host.cpp
+@@ -137,0 +138,15 @@
++  // Partition tray indicators without stopping their background agents.
++  if (config_["allowed-items"].isArray()) {
++    bool allowed = false;
++    for (const auto& item : config_["allowed-items"]) {
++      if (item.isString() && item.asString() == object_path) allowed = true;
++    }
++    if (!allowed) return;
++  }
++  if (config_["ignored-items"].isArray()) {
++    for (const auto& ignored : config_["ignored-items"]) {
++      if (ignored.isString() && ignored.asString() == object_path) {
++        return;
++      }
++    }
++  }

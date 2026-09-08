@@ -118,3 +118,22 @@ the current wallpaper are included. Existing setup backups remain outside Git.
 See `docs/LIMITATIONS.md` before restoring onto a different machine or updating
 nixpkgs. Future setup work should edit this repository rather than regenerate
 files with the old `~/hyprland-setup/create-user-config.py` script.
+
+## Desktop appearance and shell defaults
+
+Breeze Dark is the GTK/KDE default. The NixOS appearance module also supplies
+unlocked dconf defaults (`prefer-dark`) for portals and compatible applications.
+The installer runs `desktop-theme` after linking user files, so existing user
+preferences are updated as well. Run `~/.nix-profile/bin/desktop-theme` to reapply
+these defaults. Applications with their own theme override may need that override
+changed or a restart; website content is not forcibly recolored.
+
+Ghostty starts the Nix-packaged Zsh login shell. `home/.zshrc` loads the pinned
+Oh My Zsh package with `robbyrussell` and the git/node/npm plugins; `.zprofile`
+retains the NixOS login environment. Both are linked by `links.json` and the user
+installer builds `packages/zsh`. Oh My Zsh self-updates are disabled; history and
+completion caches stay outside Git. The account's login shell is unchanged.
+
+[Waybar patches](packages/waybar/) and [desktop controls](packages/desktop-controls/)
+provide separate application/system areas, the icon-grid window picker, volume
+and Bluetooth popups, and Tailscale status. Workspace clicks use Hyprland's Lua API.

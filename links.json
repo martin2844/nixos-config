@@ -1,4 +1,6 @@
 {
+  ".zshrc": "home/.zshrc",
+  ".zprofile": "home/.zprofile",
   ".config/hypr": "home/.config/hypr",
   ".config/waybar": "home/.config/waybar",
   ".config/uwsm": "home/.config/uwsm",
