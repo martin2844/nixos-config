@@ -109,7 +109,7 @@ class Panel(Gtk.Application):
             scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
             scroll.set_propagate_natural_height(True)
             scroll.set_max_content_height(500)
-            windows = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+            windows = Gtk.Grid(column_spacing=10, row_spacing=10, column_homogeneous=True)
             desktop_apps = Gio.AppInfo.get_all()
             def desktop_app(app_class):
                 key = app_class.casefold()
@@ -137,12 +137,12 @@ class Panel(Gtk.Application):
                             frame.get_style_context().add_class('active')
                         grid = Gtk.FlowBox()
                         grid.set_selection_mode(Gtk.SelectionMode.NONE)
-                        grid.set_min_children_per_line(5)
-                        grid.set_max_children_per_line(5)
-                        grid.set_row_spacing(6)
-                        grid.set_column_spacing(6)
+                        grid.set_min_children_per_line(3)
+                        grid.set_max_children_per_line(3)
+                        grid.set_row_spacing(4)
+                        grid.set_column_spacing(4)
                         frame.add(grid)
-                        windows.pack_start(frame, False, False, 0)
+                        windows.attach(frame, len(groups) % 2, len(groups) // 2, 1, 1)
                         groups[workspace_id] = grid
                     button = Gtk.Button()
                     content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
@@ -152,9 +152,9 @@ class Panel(Gtk.Application):
                     icon = app.get_icon() if app else None
                     picture = (Gtk.Image.new_from_gicon(icon, Gtk.IconSize.DIALOG) if icon
                                else Gtk.Image.new_from_icon_name('application-x-executable', Gtk.IconSize.DIALOG))
-                    picture.set_pixel_size(32)
+                    picture.set_pixel_size(24)
                     content.pack_start(picture, False, False, 0)
-                    button.set_size_request(60, 54)
+                    button.set_size_request(40, 40)
                     button.add(content)
                     name = app.get_name() if app else app_class
                     button.set_tooltip_text(name + ' · Workspace ' + workspace + '\n' + client.get('title', name))

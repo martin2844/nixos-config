@@ -34,3 +34,6 @@ Window icons are grouped inside one outlined frame per occupied workspace. Each
 frame has a workspace heading; the current workspace has a brighter outline.
 Long groups wrap and the picker scrolls when needed. Individual icons retain
 window-title tooltips and focus their original window without moving it.
+
+The picker uses two workspace frames per row and 24px application icons.
+Each frame wraps after three icons to keep the panel compact.
