@@ -4,6 +4,51 @@ Plain NixOS configuration, Plasma + Hyprland/UWSM, user dotfiles, and local
 package overrides. No flakes or Home Manager. Created from the working machine
 on 2026-09-08. The host/user name is currently `nixos` / `martin`.
 
+## Install everything
+
+On this machine, as `martin`:
+
+```sh
+git clone https://github.com/martin2844/nixos-config.git ~/Projects/nixos-config
+cd ~/Projects/nixos-config
+./install.sh --check    # build everything, without installing
+./install.sh --test     # install user packages/configs and test the system
+./install.sh --switch   # install everything and make the system generation persistent
+```
+
+If the checkout already exists, use it directly. `./install.sh --switch` is the
+single-command full installer. Run it as your normal user; it asks for sudo only
+when installation is ready. It builds the system and all custom packages, installs
+the managed user-profile packages, backs up and links the dotfiles, creates the
+screenshots directory, and activates NixOS. Python is supplied by pinned nixpkgs.
+A failed build stops before user configuration or system activation changes.
+The installation phase is not atomic across system and user configuration:
+backups preserve replaced user files, and Nix retains previous generations.
+
+This installs a desktop onto an **existing NixOS system**. It does not partition
+or format disks. The configuration targets Martin's AMD desktop and checks the
+configured disk UUIDs before activation. On another machine, adapt the hardware
+module, username/home paths, and installer checks first.
+
+After installing, select **Hyprland (UWSM)** in SDDM. Plasma remains available.
+The `--test` system generation is temporary; user packages and dotfile links are
+persistent even in test mode. Keep the checkout: live config directories link to it.
+
+ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
+`latest` download may stop being available; see [limitations](docs/LIMITATIONS.md).
+
+## Custom software included
+
+- [Internet panel](packages/internet-panel/): the Nix override and Python Ethernet
+  controls added to nmgui's graphical Wi-Fi window.
+- [ChatGPT packaging](packages/chatgpt/): the Nix derivation and Qt startup fix;
+  the proprietary app binary is fetched during the build, not committed.
+- [Desktop helpers](home/.config/hypr/scripts/): clipboard history, screenshots,
+  shortcut help, wallpaper selection, and the session menu.
+- [Development tools](packages/nvim-tools/): GitHub CLI, Neovim language servers,
+  formatters, and compiled Blink support. LazyVim configuration and its plugin
+  lockfile are under `home/.config/nvim/`.
+
 ## Layout
 
 - `hosts/nixos/`: actual `/etc/nixos` configuration and hardware module.
@@ -60,7 +105,7 @@ The wallpaper helper currently references a store-path kdialog; see limitations.
 
 ## Version control
 
-This is a local repository; no remote is configured and nothing is published.
+Public source repository: https://github.com/martin2844/nixos-config.
 Browser/app profiles, credentials, Wi-Fi passwords, Tailscale state, screenshots,
 logs, binaries, and caches are outside its scope. Host disk UUIDs, username, and
 the current wallpaper are included. Existing setup backups remain outside Git.

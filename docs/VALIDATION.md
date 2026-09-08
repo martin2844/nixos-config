@@ -16,3 +16,12 @@
   a test activation is a separate action using scripts/rebuild test.
 - The running generation differs from the build output; /etc/nixos on disk was
   used as the system source, and no assertion of identical generations is made.
+
+## Public repository installer — 2026-09-08
+
+`./install.sh --check` builds the complete system and user packages without
+activation. Installer tests cover successful build-only operation and stopping
+after a package build failure, with no profile/home/sudo changes in either case.
+The activation branch requires interactive sudo and was not executed in this
+publication task. User authentication and fresh-machine activation are not
+validated by a successful build.
