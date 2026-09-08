@@ -14,7 +14,8 @@ hl.config({
     },
     animations = { enabled = false },
     dwindle = { preserve_split = true },
-    input = { kb_layout = "us", follow_mouse = 1 },
+    -- Swap Option/Alt with Super/Win on both sides of the keyboard.
+    input = { kb_layout = "us", kb_options = "altwin:swap_alt_win", follow_mouse = 1 },
     misc = { disable_hyprland_logo = true, force_default_wallpaper = 0,
              mouse_move_enables_dpms = true, key_press_enables_dpms = true },
 })
