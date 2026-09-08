@@ -1,0 +1,5 @@
+#!/run/current-system/sw/bin/bash
+set -euo pipefail
+entry=$(cliphist list | rofi -dmenu -i -p Clipboard) || exit 0
+[[ -n "$entry" ]] || exit 0
+printf '%s\n' "$entry" | cliphist decode | wl-copy

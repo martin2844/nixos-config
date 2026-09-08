@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=hypr-clipboard-text
+Exec=wl-paste --type text --watch cliphist store
+OnlyShowIn=Hyprland;

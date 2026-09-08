@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=hypr-polkit
+Exec=/run/current-system/sw/libexec/hyprpolkitagent
+OnlyShowIn=Hyprland;

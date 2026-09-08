@@ -1,0 +1,79 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 34,
+  "spacing": 4,
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "tray",
+    "network",
+    "bluetooth",
+    "pulseaudio",
+    "cpu",
+    "memory",
+    "custom/notifications"
+  ],
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "all-outputs": true,
+    "disable-scroll": true,
+    "persistent-workspaces": {
+      "*": 9
+    }
+  },
+  "hyprland/window": {
+    "max-length": 45,
+    "separate-outputs": true
+  },
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "tray": {
+    "icon-size": 18,
+    "spacing": 8
+  },
+  "bluetooth": {
+    "format": "BT {status}",
+    "format-connected": "BT {num_connections}",
+    "on-click": "uwsm app -- blueman-manager"
+  },
+  "pulseaudio": {
+    "format": "Vol {volume}%",
+    "format-muted": "Muted",
+    "on-click": "uwsm app -- pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "scroll-step": 5
+  },
+  "cpu": {
+    "format": "CPU {usage}%",
+    "interval": 5
+  },
+  "memory": {
+    "format": "RAM {percentage}%",
+    "interval": 5
+  },
+  "custom/notifications": {
+    "format": "Notifications",
+    "on-click": "swaync-client -t",
+    "tooltip": false
+  },
+  "network": {
+    "format-ethernet": "Ethernet",
+    "format-wifi": "Wi-Fi {signalStrength}%",
+    "format-disconnected": "Offline",
+    "format-linked": "Connecting",
+    "tooltip-format": "{ifname}: {ipaddr}\nClick for Ethernet and Wi-Fi",
+    "tooltip-format-disconnected": "Click for Ethernet and Wi-Fi",
+    "on-click": "uwsm app -- /home/martin/.nix-profile/bin/nmgui",
+    "on-click-right": "uwsm app -- nm-connection-editor",
+    "interval": 5
+  }
+}

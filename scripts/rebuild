@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+action=${1:-build}
+case "$action" in
+  build) exec nix-build "$repo" -A system -o "$repo/result-system" ;;
+  test|switch|boot)
+    source=$(nix --extra-experimental-features nix-command eval --raw --file "$repo/nix/nixpkgs.nix")
+    exec sudo nixos-rebuild "$action" -I "nixpkgs=$source" -I "nixos-config=$repo/hosts/nixos/configuration.nix"
+    ;;
+  *) echo 'Usage: scripts/rebuild [build|test|switch|boot]' >&2; exit 2 ;;
+esac

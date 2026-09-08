@@ -1,0 +1,20 @@
+#!/run/current-system/sw/bin/bash
+set -euo pipefail
+if [[ $# -gt 0 ]]; then
+    file=$1
+else
+    file=$(/nix/store/62p3viqkci7aa1qiq63afvs8ps1bgfqj-kdialog-26.04.3/bin/kdialog \
+        --title 'Choose desktop wallpaper' --getopenfilename "$HOME/Pictures" \
+        '*.png *.jpg *.jpeg *.webp *.bmp | Wallpaper images') || exit 0
+fi
+[[ -f "$file" ]] || exit 1
+extension=${file##*.}
+case "${extension,,}" in png|jpg|jpeg|webp|bmp) extension=${extension,,} ;; *) exit 1 ;; esac
+image="$HOME/.config/hypr/wallpaper-custom.$extension"
+if [[ $(realpath "$file") != "$image" ]]; then cp -- "$file" "$image"; fi
+config="$HOME/.config/hypr/hyprpaper.conf"
+temp=$(mktemp "$config.XXXXXX")
+printf 'splash = false\nwallpaper {\n    monitor =\n    path = %s\n    fit_mode = cover\n}\n' "$image" > "$temp"
+mv -- "$temp" "$config"
+systemctl --user restart 'app-hypr\x2dwallpaper@autostart.service'
+notify-send 'Wallpaper updated' 'Applied to all monitors and saved for future sessions.'

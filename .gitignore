@@ -1,0 +1,11 @@
+/result*
+/.build/
+*.log
+__pycache__/
+*.pyc
+*.before-*
+*.bak
+.env
+.env.*
+*.pem
+*.key

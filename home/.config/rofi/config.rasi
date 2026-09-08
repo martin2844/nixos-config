@@ -1,0 +1,22 @@
+configuration {
+    modi: "drun";
+    show-icons: true;
+    terminal: "ghostty";
+    run-command: "uwsm app -- {cmd}";
+    font: "JetBrainsMono Nerd Font 11";
+}
+@theme "default"
+* {
+    background: #20252e;
+    foreground: #e5e9ef;
+    selected-normal-background: #3d4c60;
+    selected-normal-foreground: #ffffff;
+    normal-background: #20252e;
+    normal-foreground: #e5e9ef;
+    alternate-normal-background: #20252e;
+    alternate-normal-foreground: #e5e9ef;
+}
+window { width: 620px; border: 1px; border-color: #56677d; border-radius: 8px; padding: 12px; }
+listview { lines: 8; scrollbar: false; border: 0; }
+element { padding: 9px; border-radius: 4px; }
+inputbar { padding: 8px; }

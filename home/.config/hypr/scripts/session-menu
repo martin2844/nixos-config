@@ -1,0 +1,16 @@
+#!/run/current-system/sw/bin/bash
+set -euo pipefail
+choice=$(printf 'Lock\nLog out\nReboot\nShut down\n' | rofi -dmenu -i -p Session) || exit 0
+case "$choice" in
+    Lock) loginctl lock-session ;;
+    'Log out')
+        if uwsm check is-active >/dev/null 2>&1; then
+            uwsm stop
+        else
+            hyprctl dispatch 'hl.dsp.exit()'
+        fi ;;
+    Reboot|'Shut down')
+        confirm=$(printf 'Cancel\nConfirm\n' | rofi -dmenu -p "$choice?") || exit 0
+        [[ "$confirm" == Confirm ]] || exit 0
+        if [[ "$choice" == Reboot ]]; then systemctl reboot; else systemctl poweroff; fi ;;
+esac

@@ -1,0 +1,2 @@
+26.05.9227.c25784012c99 (Yarara)
+nixpkgs revision: c25784012c9982bca5b3e0de87e90bbdac8927d3

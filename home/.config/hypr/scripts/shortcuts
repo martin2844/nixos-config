@@ -1,0 +1,17 @@
+#!/run/current-system/sw/bin/bash
+set -euo pipefail
+cache=${XDG_CACHE_HOME:-$HOME/.cache}
+if [[ "${1:-all}" == windows ]]; then
+    file="$cache/hypr-window-shortcuts.txt"
+    title='Window controls'
+    message='Omarchy order • Super + left-drag moves • Super + right-drag resizes • Esc closes'
+else
+    file="$cache/hypr-shortcuts.txt"
+    title=Shortcuts
+    message='Type to search • Esc to close • Super = Windows key'
+fi
+# Preserve section/input order, including while filtering. Selection executes nothing.
+rofi -dmenu -i -no-sort -p "$title" -no-custom \
+    -mesg "$message" \
+    -theme-str 'window { width: 1100px; } listview { lines: 20; }' \
+    < "$file" > /dev/null || true

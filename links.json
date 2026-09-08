@@ -1,0 +1,20 @@
+{
+  ".config/hypr": "home/.config/hypr",
+  ".config/waybar": "home/.config/waybar",
+  ".config/uwsm": "home/.config/uwsm",
+  ".config/autostart": "home/.config/autostart",
+  ".config/nvim": "home/.config/nvim",
+  ".config/ghostty": "home/.config/ghostty",
+  ".config/rofi": "home/.config/rofi",
+  ".config/swaync": "home/.config/swaync",
+  ".config/networkmanager-dmenu": "home/.config/networkmanager-dmenu",
+  ".config/mimeapps.list": "home/.config/mimeapps.list",
+  ".config/hyprland-mimeapps.list": "home/.config/hyprland-mimeapps.list",
+  ".local/share/applications/chatgpt.desktop": "home/.local/share/applications/chatgpt.desktop",
+  ".config/nvim-tools": "packages/nvim-tools",
+  ".local/share/chatgpt-nix": "packages/chatgpt",
+  "hyprland-setup/internet-panel": "packages/internet-panel",
+  ".config/gtk-3.0": "home/.config/gtk-3.0",
+  ".config/gtk-4.0": "home/.config/gtk-4.0",
+  ".config/xsettingsd": "home/.config/xsettingsd"
+}
