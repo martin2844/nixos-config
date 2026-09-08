@@ -13,6 +13,11 @@
   security.polkit.enable = true;
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
+  # Solaar provides Logitech DPI controls; udev grants access to the active user.
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
 
   # Steam's module supplies its runtime and 32-bit AMD graphics support.
   programs.steam.enable = true;

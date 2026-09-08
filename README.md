@@ -40,6 +40,11 @@ ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
 Slack is installed in the managed user profile from pinned nixpkgs. Open Slack
 from the application launcher and sign in to your workspace after installation.
 
+Logitech wireless device support includes Solaar and its device-access rules.
+Open Solaar from the launcher, select the mouse, unlock the DPI setting and
+choose a supported value. Solaar saves device settings locally; they are not
+part of Git. After first activation, reconnect the receiver if access is denied.
+
 ## Custom software included
 
 - [Codex usage indicator](packages/codex-usage/): Waybar shows the remaining
