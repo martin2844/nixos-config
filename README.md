@@ -174,3 +174,28 @@ images; personal wallpaper copies are local and ignored by Git.
 The installer runs `scripts/configure-codex-sound.py` after package installation;
 it edits the private user config in place with a backup, never copies it into
 this public repo, and refuses to replace an unrelated notification command.
+
+## Prepare another PC without changing this one
+
+On the **destination PC**, after installing NixOS and cloning this repo:
+
+```sh
+nix-shell -p python3 --run 'python3 scripts/prepare-machine.py --output "$HOME/nixos-desktop"'
+```
+
+The script defaults to the current Unix user/home and the destination's existing
+`/etc/nixos/configuration.nix`. Override them with `--user`, `--home` and `--base`
+when preparing for a different existing account. It requires a plain NixOS base;
+it does not convert flakes, create accounts, discover partitions or install NixOS.
+
+It exports tracked source into a **new directory outside this repo**, omits the
+original hardware file, adapts home paths/Tailscale operator, and clears the
+machine-specific monitor overrides. The prepared NixOS configuration imports the
+destination's base in place, preserving its relative imports, disks, boot loader,
+users and stateVersion. Keep that base available. Review possible module conflicts
+with its existing desktop/network/audio setup before activating anything.
+
+The source checkout, `/etc/nixos`, user config and running system are untouched.
+Existing destination directories are rejected. The prepared `install.sh` accepts
+only `--check`; it cannot install or activate. Follow the generated `PREPARED.md`
+for the explicit build, user-file preview and eventual test/switch steps.
