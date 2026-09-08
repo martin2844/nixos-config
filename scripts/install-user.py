@@ -3,6 +3,7 @@
 import json
 import argparse
 import subprocess
+import runpy
 from pathlib import Path
 
 repo = Path(__file__).resolve().parent.parent
@@ -15,7 +16,10 @@ packages = {'chatgpt-desktop': 'chatgpt', 'nmgui': 'internet-panel',
             'desktop-wallpapers': 'wallpapers', 'desktop-wallpaper-tools': 'wallpaper-tools', 'waybar': 'waybar'}
 packages['desktop-controls'] = 'desktop-controls'
 outputs = {}
+packages['hyprmod'] = 'hyprmod'
+packages['omarchy-screenshot-preview'] = 'screenshot-preview'
 packages['desktop-zsh'] = 'zsh'
+packages['codex-complete-sound'] = 'codex-sound'
 packages['desktop-theme'] = 'desktop-theme'
 for name, attr in packages.items():
     outputs[name] = subprocess.check_output(
@@ -44,3 +48,4 @@ for name, path in outputs.items():
 for path, target in [(blink, 'nvim-blink'), (outputs['lazyvim-development-tools'], 'nvim-tools')]:
     subprocess.run(['nix-store', '--add-root', str(Path.home() / '.local/share' / target),
                     '--indirect', '-r', path], check=True)
+runpy.run_path(str(repo / 'scripts/configure-codex-sound.py'), run_name='__main__')

@@ -11,7 +11,11 @@ flock 9
 extension=${file##*.}
 case "${extension,,}" in png|jpg|jpeg|webp|bmp) extension=${extension,,} ;; *) exit 1 ;; esac
 image="$HOME/.config/hypr/wallpaper-custom.$extension"
-if [[ $(realpath "$file") != "$image" ]]; then
+curated="$HOME/.nix-profile/share/wallpapers/curated/$(basename -- "$file")"
+if [[ -f "$curated" ]] && cmp -s -- "$file" "$curated"; then
+    # Keep a reproducible profile-relative reference for packaged wallpapers.
+    image="$curated"
+elif [[ $(realpath "$file") != "$image" ]]; then
     # Nix-sourced images can be read-only. Replace atomically instead of writing
     # through the previous file, so selecting the next image still works.
     image_temp=$(mktemp "$HOME/.config/hypr/.wallpaper.XXXXXX")

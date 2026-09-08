@@ -20,7 +20,8 @@
     "custom/tailscale",
     "cpu",
     "memory",
-    "custom/notifications"
+    "custom/notifications",
+    "custom/settings"
   ],
   "hyprland/workspaces": {
     "format": "{id}",
@@ -37,6 +38,11 @@
   "clock": {
     "format": "{:%a %d %b  %H:%M}",
     "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "custom/settings": {
+    "format": "",
+    "tooltip-format": "Ajustes de Hyprland (Super+,)",
+    "on-click": "uwsm app -- hyprmod"
   },
   "bluetooth": {
     "format": "",

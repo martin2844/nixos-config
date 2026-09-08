@@ -1,0 +1,58 @@
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -12,9 +12,9 @@
+ 
+ const PREVIEW_WIDTH: i32 = 220;
+ const DRAG_ICON_WIDTH: i32 = 120;
+-const MARGIN_BOTTOM: i32 = 80;
++const MARGIN_BOTTOM: i32 = 20;
+ const MARGIN_RIGHT: i32 = 20;
+-const DISMISS_MS: u64 = 5000;
++const DISMISS_MS: u64 = 8000;
+ const FADE_STEP_MS: u64 = 16;
+ const FADE_DURATION_MS: f64 = 300.0;
+ 
+@@ -47,6 +47,7 @@
+ 
+     let app = gtk::Application::builder()
+         .application_id("com.omarchy.screenshot.preview")
++        .flags(gtk4::gio::ApplicationFlags::ALLOW_REPLACEMENT | gtk4::gio::ApplicationFlags::REPLACE)
+         .build();
+ 
+     app.connect_activate(move |app| {
+@@ -57,7 +58,7 @@
+ }
+ 
+ fn scale_to_width(pixbuf: &gtk4::gdk_pixbuf::Pixbuf, width: i32, aspect: f64) -> gdk::Texture {
+-    let height = (width as f64 * aspect) as i32;
++    let height = ((width as f64 * aspect) as i32).max(1);
+     let scaled = pixbuf
+         .scale_simple(width, height, gtk4::gdk_pixbuf::InterpType::Bilinear)
+         .expect("Failed to scale pixbuf");
+@@ -230,9 +231,11 @@
+     cancel_timer(dismiss_handle);
+     let win = win.clone();
+     let fade_handle = fade_handle.clone();
++    let handle = dismiss_handle.clone();
+     let id = glib::timeout_add_local_once(
+         std::time::Duration::from_millis(DISMISS_MS),
+         move || {
++            handle.take();
+             start_fade(&win, &fade_handle, 1.0, 0.0, true);
+         },
+     );
+@@ -249,12 +252,14 @@
+     cancel_timer(fade_handle);
+     let win = win.clone();
+     let start = std::time::Instant::now();
++    let handle = fade_handle.clone();
+     let id = glib::timeout_add_local(
+         std::time::Duration::from_millis(FADE_STEP_MS),
+         move || {
+             let progress = (start.elapsed().as_secs_f64() * 1000.0 / FADE_DURATION_MS).min(1.0);
+             win.set_opacity(from + (to - from) * progress);
+             if progress >= 1.0 {
++                handle.take();
+                 if close_on_done {
+                     win.close();
+                 }

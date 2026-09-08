@@ -26,6 +26,9 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Container runtime for local development, including the Slab stack.
+  virtualisation.docker.enable = true;
+
   # Set your time zone.
   time.timeZone = "Europe/Madrid";
 
@@ -86,6 +89,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     packages = with pkgs; [
       kdePackages.kate

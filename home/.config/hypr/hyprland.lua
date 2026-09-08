@@ -49,6 +49,18 @@ hl.window_rule({
     center = true,
 })
 
+-- Graphical settings remain readable at a comfortable size.
+hl.window_rule({
+    name = "hyprmod-settings",
+    match = { class = "^io\\.github\\.bluemancz\\.hyprmod$" },
+    float = true,
+    size = "1100 780",
+    center = true,
+})
+
+-- HyprMod managed settings, applied after the desktop defaults.
+require("hyprland-gui")
+
 -- Advanced device settings opened from the status-bar popups.
 hl.window_rule({
     name = "desktop-device-settings",

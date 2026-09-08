@@ -25,3 +25,15 @@ after a package build failure, with no profile/home/sudo changes in either case.
 The activation branch requires interactive sudo and was not executed in this
 publication task. User authentication and fresh-machine activation are not
 validated by a successful build.
+
+## Full desktop sync — 2026-09-08
+
+`./install.sh --check` successfully built the complete NixOS system and every
+user package, including HyprMod, screenshot preview, completion audio, Zsh,
+Waybar, desktop controls and dark-theme setup. No activation or profile changes
+were performed by this check. Installer unit tests and Python/JSON/shell syntax
+checks passed; Hyprland reported no runtime configuration errors.
+
+The current wallpaper matches the Nix-packaged Plasma Subarctic image by SHA-256;
+the repo stores its user-profile reference instead of a copied image. Private
+Codex settings and generated wallpaper copies remain outside version control.

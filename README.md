@@ -39,6 +39,13 @@ ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
 
 ## Custom software included
 
+- [Codex completion sound](packages/codex-sound/): the installer configures a
+  sound after each completed response and disables Codex's desktop toasts.
+- [Screenshot preview](packages/screenshot-preview/): draggable bottom-right
+  thumbnails after Print or Shift+Print; click to edit, with automatic image copying.
+- [HyprMod](packages/hyprmod/): an existing graphical Hyprland settings app,
+  packaged for NixOS with Lua support. Open with Super+, or the top-bar gear.
+
 - [Internet panel](packages/internet-panel/): the Nix override and Python Ethernet
   controls added to nmgui's graphical Wi-Fi window.
 - [ChatGPT packaging](packages/chatgpt/): the Nix derivation and Qt startup fix;
@@ -137,3 +144,20 @@ completion caches stay outside Git. The account's login shell is unchanged.
 [Waybar patches](packages/waybar/) and [desktop controls](packages/desktop-controls/)
 provide separate application/system areas, the icon-grid window picker, volume
 and Bluetooth popups, and Tailscale status. Workspace clicks use Hyprland's Lua API.
+
+## Additional captured desktop settings
+
+HyprMod's `home/.config/hypr/hyprland-gui.lua` records the current DP-3 monitor
+at 2560×1440/240 Hz and blur preference; the main config retains the automatic
+monitor fallback. The session menu includes suspend, and idle DPMS actions use
+the Hyprland Lua dispatchers. Docker is enabled in the host config with Martin
+in its group for local development.
+
+The selected Plasma Subarctic wallpaper is referenced through the Nix user
+profile. The wallpaper script preserves reproducible references for curated
+images; personal wallpaper copies are local and ignored by Git.
+
+[Codex completion sound](packages/codex-sound/) is built by the user installer.
+The installer runs `scripts/configure-codex-sound.py` after package installation;
+it edits the private user config in place with a backup, never copies it into
+this public repo, and refuses to replace an unrelated notification command.

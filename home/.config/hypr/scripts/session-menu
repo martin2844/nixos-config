@@ -1,8 +1,9 @@
 #!/run/current-system/sw/bin/bash
 set -euo pipefail
-choice=$(printf 'Lock\nLog out\nReboot\nShut down\n' | rofi -dmenu -i -p Session) || exit 0
+choice=$(printf 'Lock\nSuspend\nLog out\nReboot\nShut down\n' | rofi -dmenu -i -p Session) || exit 0
 case "$choice" in
     Lock) loginctl lock-session ;;
+    Suspend) systemctl suspend ;;
     'Log out')
         if uwsm check is-active >/dev/null 2>&1; then
             uwsm stop

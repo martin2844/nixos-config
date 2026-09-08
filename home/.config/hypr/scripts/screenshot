@@ -1,14 +1,20 @@
 #!/run/current-system/sw/bin/bash
 set -euo pipefail
+if [[ "${1:-}" == edit ]]; then
+    swappy -f "$2" -o "$2"
+    wl-copy --type image/png < "$2"
+    exit 0
+fi
 mkdir -p "$HOME/Pictures/Screenshots"
 file="$HOME/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S-%N).png"
 if [[ "${1:-full}" == region ]]; then
     geometry=$(slurp) || exit 0
     grim -g "$geometry" "$file"
-    wl-copy --type image/png < "$file"
-    swappy -f "$file" -o "$file"
 else
     grim "$file"
-    wl-copy --type image/png < "$file"
 fi
-notify-send 'Screenshot saved' "$file"
+wl-copy --type image/png < "$file"
+if command -v omarchy-screenshot-preview >/dev/null; then
+    exec omarchy-screenshot-preview "$file" "$HOME/.config/hypr/scripts/screenshot" edit "$file"
+fi
+notify-send 'Screenshot saved and copied' "$file"

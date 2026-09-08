@@ -15,6 +15,9 @@ in
   desktop-controls = import ./packages/desktop-controls { inherit pkgs; };
   waybar = import ./packages/waybar { inherit pkgs; };
   network-menu = pkgs.networkmanager_dmenu;
+  hyprmod = import ./packages/hyprmod { inherit pkgs; };
+  screenshot-preview = import ./packages/screenshot-preview { inherit pkgs; };
   desktop-theme = import ./packages/desktop-theme { inherit pkgs; };
   zsh = import ./packages/zsh { inherit pkgs; };
+  codex-sound = import ./packages/codex-sound { inherit pkgs; };
 }

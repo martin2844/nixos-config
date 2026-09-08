@@ -9,3 +9,6 @@ __pycache__/
 .env.*
 *.pem
 *.key
+
+# Local wallpaper copies; curated images are restored from the Nix package.
+/home/.config/hypr/wallpaper-custom.*
