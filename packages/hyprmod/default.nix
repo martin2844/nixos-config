@@ -79,6 +79,11 @@ python.buildPythonApplication {
     sha256 = "0362r1ywpg94a9bra1k75x5s17r8wi8rkxnmx3fjcpn3cajw9hvd";
   };
   build-system = [ python.hatchling ];
+  patches = [ ./desktop-settings.patch ];
+  postPatch = ''
+    cp -r ${./desktop_settings} hyprmod/desktop_settings
+    chmod -R u+w hyprmod/desktop_settings
+  '';
   dependencies = [
     python.pygobject3
     python.pycairo
@@ -104,6 +109,12 @@ python.buildPythonApplication {
       pkgs.lib.makeBinPath [
         pkgs.lua5_4
         pkgs.hyprland
+        pkgs.power-profiles-daemon
+        pkgs.systemd
+        pkgs.upower
+        pkgs.ddcutil
+        pkgs.brightnessctl
+        pkgs.coreutils
       ]
     })
   '';

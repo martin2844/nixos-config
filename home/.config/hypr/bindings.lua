@@ -22,7 +22,7 @@ end
 app("SUPER + Return", "ghostty", "Open terminal")
 app("SUPER + E", "dolphin", "Open file manager")
 app("SUPER + space", "rofi -show drun", "Application launcher")
-app("SUPER + comma", "hyprmod", "Hyprland settings")
+app("SUPER + comma", "hyprmod", "System settings")
 app("SUPER + slash", os.getenv("HOME") .. "/.config/hypr/scripts/shortcuts", "Search keyboard shortcuts")
 app("SUPER + V", os.getenv("HOME") .. "/.config/hypr/scripts/clipboard", "Clipboard history")
 app("Print", os.getenv("HOME") .. "/.config/hypr/scripts/screenshot full", "Screenshot entire desktop")

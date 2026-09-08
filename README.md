@@ -47,8 +47,9 @@ ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
   sound after each completed response and disables Codex's desktop toasts.
 - [Screenshot preview](packages/screenshot-preview/): draggable bottom-right
   thumbnails after Print or Shift+Print; click to edit, with automatic image copying.
-- [HyprMod](packages/hyprmod/): an existing graphical Hyprland settings app,
-  packaged for NixOS with Lua support. Open with Super+, or the top-bar gear.
+- [HyprMod](packages/hyprmod/): Hyprland settings with local English pages for
+  power profiles, idle settings, presentation mode, optional display brightness
+  and access to existing system tools. Open with Super+, or the top-bar gear.
 
 - [Internet panel](packages/internet-panel/): the Nix override and Python Ethernet
   controls added to nmgui's graphical Wi-Fi window.

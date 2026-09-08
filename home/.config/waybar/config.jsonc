@@ -42,7 +42,7 @@
   },
   "custom/settings": {
     "format": "",
-    "tooltip-format": "Ajustes de Hyprland (Super+,)",
+    "tooltip-format": "System settings (Super+,)",
     "on-click": "uwsm app -- hyprmod"
   },
   "custom/codex": {

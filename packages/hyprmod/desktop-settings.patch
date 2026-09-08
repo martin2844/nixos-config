@@ -1,0 +1,64 @@
+--- a/hyprmod/window.py
++++ b/hyprmod/window.py
+@@ -29,6 +29,7 @@
+ from hyprmod.pages.profiles import ProfilesPage
+ from hyprmod.pages.section import SectionPage
+ from hyprmod.pages.settings import SettingsPage
++from hyprmod.desktop_settings.pages import EnergyPage, BrightnessPage, SystemToolsPage
+ from hyprmod.pages.window_rules import WindowRulesPage
+ from hyprmod.pages.workspaces import WorkspacesPage
+ from hyprmod.ui import (
+@@ -331,7 +332,7 @@
+         if groups:
+             first_id = groups[0]["id"]
+             self.show_page(first_id)
+-            self._sidebar.select_first()
++            self.navigate("desktop_energy")
+ 
+     def _build_content_pane(self):
+         """Build the content pane with page stack and banner."""
+@@ -410,6 +411,9 @@
+         # behind a ViewSwitcher, registering their option rows via
+         # ``build_schema_group_widgets`` during ``build()``.
+         standalone_page_specs: list[tuple[type, str, str, str]] = [
++            (EnergyPage, "_energy_page", "desktop_energy", "Power and sleep"),
++            (BrightnessPage, "_brightness_page", "desktop_brightness", "Displays and brightness"),
++            (SystemToolsPage, "_system_tools_page", "desktop_tools", "More settings"),
+             (LayoutsPage, "_layouts_page", "layouts", "Layouts"),
+             (ProfilesPage, "_profiles_page", "profiles", "Profiles"),
+             (PendingChangesPage, "_pending_page", "pending", "Pending Changes"),
+--- a/hyprmod/ui/sidebar.py
++++ b/hyprmod/ui/sidebar.py
+@@ -191,6 +191,11 @@
+                 return
+             add_row(listbox, group_id, group["label"], group.get("icon"))
+ 
++        system = new_category("System")
++        add_row(system, "desktop_energy", "Power and sleep", "battery-symbolic")
++        add_row(system, "desktop_brightness", "Displays and brightness", "display-brightness-symbolic")
++        add_row(system, "desktop_tools", "More settings", "preferences-system-symbolic")
++
+         look_and_feel = new_category("Look & Feel")
+         add_schema_row(look_and_feel, "general")
+         add_schema_row(look_and_feel, "decoration")
+--- a/hyprmod/main.py
++++ b/hyprmod/main.py
+@@ -44,6 +44,7 @@
+     def do_activate(self):
+         win = self.props.active_window
+-        if not isinstance(win, HyprModWindow):
++        is_new = not isinstance(win, HyprModWindow)
++        if is_new:
+             win = HyprModWindow(application=self)
+ 
+         # A broken install takes precedence over onboarding: stacking two
+@@ -63,6 +64,9 @@
+             OnboardingDialog(on_setup=_on_setup).present(win)
+ 
+         win.present()
++        if is_new:
++            # GTK may select a pinned sidebar row while mapping the window.
++            win.navigate("desktop_energy")
+ 
+ 
+ def main():
