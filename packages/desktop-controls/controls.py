@@ -64,7 +64,17 @@ class Panel(Gtk.Application):
         frame.workspace-group { border: 1px solid #495362; border-radius: 7px; padding: 6px; }
         frame.workspace-group.active { border-color: #91a7bf; }
         frame.workspace-group > border { border: none; }
-        frame.workspace-group label { font-weight: normal; }''')
+        frame.workspace-group label { font-weight: normal; }
+        button.app-icon, button.app-icon:hover, button.app-icon:active {
+            background: transparent; background-image: none; border: none;
+            box-shadow: none; padding: 0; min-width: 24px; min-height: 24px;
+        }
+        button.app-icon:focus { outline: 1px solid #b8c9dd; outline-offset: 3px; }
+        tooltip, tooltip.background {
+            background: #10141a; color: #ffffff; border: 1px solid #94a3b8;
+            border-radius: 6px; padding: 8px; opacity: 1;
+        }
+        tooltip label { color: #ffffff; text-shadow: none; font-size: 13px; }''')
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin=16)
         self.window.add(self.box)
@@ -145,6 +155,9 @@ class Panel(Gtk.Application):
                         windows.attach(frame, len(groups) % 2, len(groups) // 2, 1, 1)
                         groups[workspace_id] = grid
                     button = Gtk.Button()
+                    button.get_style_context().add_class('app-icon')
+                    button.set_halign(Gtk.Align.CENTER)
+                    button.set_valign(Gtk.Align.CENTER)
                     content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
                     app_class = client.get('class', 'Aplicación')
                     app = desktop_app(app_class)
@@ -154,7 +167,7 @@ class Panel(Gtk.Application):
                                else Gtk.Image.new_from_icon_name('application-x-executable', Gtk.IconSize.DIALOG))
                     picture.set_pixel_size(24)
                     content.pack_start(picture, False, False, 0)
-                    button.set_size_request(40, 40)
+                    button.set_size_request(24, 24)
                     button.add(content)
                     name = app.get_name() if app else app_class
                     button.set_tooltip_text(name + ' · Workspace ' + workspace + '\n' + client.get('title', name))

@@ -37,3 +37,7 @@ window-title tooltips and focus their original window without moving it.
 
 The picker uses two workspace frames per row and 24px application icons.
 Each frame wraps after three icons to keep the panel compact.
+
+Application buttons show only their icons, without filled tiles or padding.
+Tooltips use white text on an opaque dark background with a visible border.
+A focus outline preserves keyboard navigation visibility.
