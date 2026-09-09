@@ -113,12 +113,12 @@
     "spacing": 10,
     "ignored-items": [
       "/org/ayatana/NotificationItem/nm_applet",
-      "/org/blueman/sni",
-      "/org/ayatana/NotificationItem/steam"
+      "/org/blueman/sni"
     ],
     "icons": {
       "nm-applet": "/home/martin/.config/waybar/icons/network.svg"
-    }
+    },
+    "show-passive-items": true
   },
   "tray#network": {
     "icon-size": 18,

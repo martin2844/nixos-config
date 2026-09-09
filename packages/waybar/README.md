@@ -15,7 +15,11 @@ while `tray#network` only accepts NetworkManager. A separator places application
 icons apart from network, Bluetooth, audio, usage, notifications and settings.
 The NetworkManager dropdown remains native and CPU/RAM percentages stay visible.
 
-Application tray icons remain visible; Steam is hidden. A single windows
+Application tray icons remain visible, including Steam and passive indicators. A single windows
 button opens the desktop-controls window list instead of showing every window. The second local patch updates workspace clicks
 to the typed Lua dispatchers required by the pinned Hyprland 0.55.4. It must be
 reviewed alongside a future Hyprland upgrade. Neither patch changes NixOS services.
+
+Apps that expose a StatusNotifierItem remain accessible even without an open
+window. Only the duplicated network/Bluetooth applets are excluded from the app
+area. Applications without a tray implementation cannot appear in this tray.

@@ -21,7 +21,7 @@ package, while Waybar starts panels on demand through `uwsm app --`.
 `desktop-controls windows` lists open Hyprland windows in a scrollable dropdown,
 ordered by workspace and application. Selecting one focuses it through the typed
 Lua API. Window titles are plain text and addresses are validated before dispatch.
-The tray remains reserved for background apps; Steam's tray icon is hidden.
+The tray remains available for background apps, including Steam.
 
 The window picker is an icon grid, with workspace numbers under icons and window
 names in tooltips. Desktop-entry icons are resolved by application ID or
