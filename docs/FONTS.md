@@ -1,31 +1,30 @@
-# SF Pro desktop trial
+# Desktop fonts
 
-The desktop uses SF Pro Text for GTK/Qt controls, Waybar text, Rofi and Hyprlock.
-Ghostty uses SF Mono, with JetBrainsMono Nerd Font as a glyph fallback.
-Waybar icon fonts remain unchanged.
-Applications with their own fonts, including web pages, may override the desktop.
-Already-running applications may need reopening to discover the installed font.
+The active combination is Inter for the desktop interface and JetBrainsMono
+Nerd Font for Ghostty. GTK/Qt controls, Waybar text, Rofi and Hyprlock use Inter.
+Existing sizes are preserved: 10 pt for GTK/KDE, 12 px for Waybar and 11 pt for
+Ghostty. Waybar icons keep their Nerd Font family.
 
-`desktop-fonts` imports the three original OTF files from
+The `desktop-theme` package includes Inter from pinned nixpkgs. JetBrains Mono
+Nerd Font is installed by the host configuration. The `desktop-fonts` command
+applies GTK/KDE font preferences without changing colors; the full installer's
+`desktop-theme` command also invokes it. Fontconfig's generic sans-serif family
+prefers Inter and falls back to Noto Sans. Some apps need reopening to discover
+new fonts; websites and apps with their own typography can override these defaults.
+
+## Previous Apple font trial
+
+SF Pro Text and SF Mono are no longer selected. Installed copies are retained
+for comparison. `packages/sf-mono` remains available as an optional Nix build
+(`nix-build . -A sf-mono -o result-sf-mono`), with the official Apple download
+pinned by SHA-256 and its license preserved. It is not part of the default
+user-package installation anymore.
+
+SF Pro's local OTF files were imported from
 `~/clasificar/clasificar-fe/public/fonts/sf-pro` into
-`~/.local/share/fonts/sf-pro`, refreshes fontconfig, and applies GTK/KDE user
-preferences. `SF_PRO_SOURCE` can point at another directory. Existing installed
-font files are preserved. This command is included in the `desktop-theme`
-package and is also called by the full installer's theme setup.
+`~/.local/share/fonts/sf-pro`. They are outside Git. The active Inter setup does
+not require that checkout or the Apple fonts.
 
-Font binaries and personal KDE settings are not committed. On another PC,
-provide that source checkout or install the same fonts locally; Noto Sans is
-the generic sans-serif fallback when SF Pro is absent. The home link manifest
-installs the fontconfig preference. No system rebuild is needed for this trial.
-
-The pre-trial user settings were backed up under
-`~/.local/state/nixos-config/backups/sf-pro-20260909-165021` on the original PC.
-
-## SF Mono in Ghostty
-
-`packages/sf-mono` downloads the official Apple DMG with a pinned SHA-256 and
-extracts its twelve OTF faces without running the macOS installer. The managed
-user-package installer includes it. Font binaries stay outside Git; the package
-preserves Apple's license under `share/licenses/sf-mono/License.rtf`.
-Build with `nix-build . -A sf-mono -o result-sf-mono`.
-After installation, refresh the font cache and reload Ghostty's configuration.
+Before switching to Inter, configuration files and personal KDE preferences
+were backed up under `~/.local/state/nixos-config/backups/inter-20260909-170201`
+on the original PC. Earlier trials are also recorded in Git.

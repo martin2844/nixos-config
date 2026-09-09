@@ -3,7 +3,7 @@ configuration {
     show-icons: true;
     terminal: "ghostty";
     run-command: "uwsm app -- {cmd}";
-    font: "SF Pro Text 11";
+    font: "Inter 11";
 }
 @theme "default"
 * {
