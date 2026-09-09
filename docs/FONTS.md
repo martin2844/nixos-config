@@ -1,7 +1,8 @@
 # SF Pro desktop trial
 
 The desktop uses SF Pro Text for GTK/Qt controls, Waybar text, Rofi and Hyprlock.
-Monospaced terminal/editor fonts and Waybar icon fonts remain unchanged.
+Ghostty uses SF Mono, with JetBrainsMono Nerd Font as a glyph fallback.
+Waybar icon fonts remain unchanged.
 Applications with their own fonts, including web pages, may override the desktop.
 Already-running applications may need reopening to discover the installed font.
 
@@ -19,3 +20,12 @@ installs the fontconfig preference. No system rebuild is needed for this trial.
 
 The pre-trial user settings were backed up under
 `~/.local/state/nixos-config/backups/sf-pro-20260909-165021` on the original PC.
+
+## SF Mono in Ghostty
+
+`packages/sf-mono` downloads the official Apple DMG with a pinned SHA-256 and
+extracts its twelve OTF faces without running the macOS installer. The managed
+user-package installer includes it. Font binaries stay outside Git; the package
+preserves Apple's license under `share/licenses/sf-mono/License.rtf`.
+Build with `nix-build . -A sf-mono -o result-sf-mono`.
+After installation, refresh the font cache and reload Ghostty's configuration.
