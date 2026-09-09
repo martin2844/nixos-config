@@ -22,6 +22,13 @@ hl.config({
 -- Customize shortcuts here; the help list updates on reload.
 dofile(os.getenv("HOME") .. "/.config/hypr/bindings.lua")
 
+-- Follow Chrome to its workspace when an external link requests activation.
+hl.window_rule({
+    name = "chrome-link-activation",
+    match = { class = "^[Gg]oogle-chrome.*$" },
+    focus_on_activate = true,
+})
+
 -- Keep advanced network settings and applet dialogs floating too.
 hl.window_rule({
     name = "network-dialogs",
