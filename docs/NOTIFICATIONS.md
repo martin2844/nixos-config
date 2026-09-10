@@ -7,8 +7,8 @@ preserving grouping, actions, inline replies and keyboard interaction.
 Popups use a 460 px window, an opaque graphite surface for readability, Inter
 15/14 px title/body typography, 16 px inner padding and 40 px application images.
 Application icons come from the notification or its desktop entry; notifications
-without usable application metadata may show a generic fallback icon. An avatar
-can also have a smaller application badge. Critical notifications have a warm
+without usable application metadata may show a generic fallback icon. The small
+overlay application badge is hidden to avoid duplicate logos. Critical notifications have a warm
 border and keep their existing non-expiring timeout.
 
 After editing, run `swaync-client -R` and `swaync-client -rs`. Restart the

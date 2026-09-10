@@ -39,6 +39,11 @@ notificationwindow, .control-center {
   border-radius: 10px;
 }
 
+/* App badges duplicate the main logo in terminal and Electron notifications. */
+.notification-row .notification-background .notification .notification-default-action .notification-content .app-icon {
+  opacity: 0;
+}
+
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
   font-weight: 600;
   margin-right: 16px;
