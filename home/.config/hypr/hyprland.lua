@@ -68,6 +68,16 @@ hl.window_rule({
 -- HyprMod managed settings, applied after the desktop defaults.
 require("hyprland-gui")
 
+-- Process manager opened from the CPU and RAM indicators.
+hl.window_rule({
+    name = "system-monitor",
+    match = { class = "^org\\.kde\\.plasma-systemmonitor$" },
+    float = true,
+    size = "1100 780",
+    center = true,
+    focus_on_activate = true,
+})
+
 -- Advanced device settings opened from the status-bar popups.
 hl.window_rule({
     name = "desktop-device-settings",

@@ -83,12 +83,14 @@
   "cpu": {
     "format": " {usage}%",
     "interval": 5,
-    "tooltip-format": "CPU: {usage}%"
+    "tooltip-format": "CPU: {usage}%\nClick: open process manager",
+    "on-click": "uwsm app -- plasma-systemmonitor --page-name Processes"
   },
   "memory": {
     "format": " {percentage}%",
     "interval": 5,
-    "tooltip-format": "RAM: {used:0.1f} / {total:0.1f} GiB ({percentage}%)"
+    "tooltip-format": "RAM: {used:0.1f} / {total:0.1f} GiB ({percentage}%)\nClick: open process manager",
+    "on-click": "uwsm app -- plasma-systemmonitor --page-name Processes"
   },
   "custom/notifications": {
     "format": "󰂚",
