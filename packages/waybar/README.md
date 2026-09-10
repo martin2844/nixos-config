@@ -23,3 +23,7 @@ reviewed alongside a future Hyprland upgrade. Neither patch changes NixOS servic
 Apps that expose a StatusNotifierItem remain accessible even without an open
 window. Only the duplicated network/Bluetooth applets are excluded from the app
 area. Applications without a tray implementation cannot appear in this tray.
+
+The clock also has a local [interactive holiday calendar](calendar/README.md):
+large adaptive cells, a padded outline for today, holiday borders and per-day
+hover details. `calendar-popup: true` replaces the text-only clock tooltip.

@@ -45,3 +45,12 @@ tooltip label { font-size: 12px; padding: 6px; }
 /* Notification tray and a single dropdown for all open windows. */
 #custom-windows { padding: 0 8px; font-size: 17px; border-radius: 5px; }
 #custom-windows:hover { background: #303a48; }
+
+/* Interactive calendar: larger type, native HiDPI sizing, per-day hover. */
+#desktop-calendar { background: #20252e; color: #edf1f7; border: 1px solid #627086; border-radius: 14px; }
+#desktop-calendar * { font-family: "Inter", sans-serif; font-size: 15px; }
+#desktop-calendar button { padding: 6px 12px; min-height: 28px; background: #303a48; border: 0; border-radius: 6px; color: #edf1f7; }
+#desktop-calendar button:hover { background: #43536a; }
+#desktop-calendar .calendar-title { font-size: 22px; font-weight: bold; }
+#desktop-calendar .calendar-weekday { color: #aab7c9; font-size: 14px; padding: 6px 0; }
+#desktop-calendar .calendar-coverage { color: #aab7c9; font-size: 11px; }

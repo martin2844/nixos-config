@@ -1,0 +1,40 @@
+--- a/include/modules/clock.hpp
++++ b/include/modules/clock.hpp
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include "ALabel.hpp"
++#include "modules/desktop_calendar.hpp"
+ #include "util/date.hpp"
+ #include "util/sleeper_thread.hpp"
+ 
+@@ -21,6 +22,7 @@
+   auto doAction(const std::string&) -> void override;
+ 
+  private:
++  std::unique_ptr<DesktopCalendar> desktop_calendar_;
+   const std::locale m_locale_;
+   // tooltip
+   const std::string m_tlpFmt_;
+--- a/src/modules/clock.cpp
++++ b/src/modules/clock.cpp
+@@ -146,6 +146,12 @@
+     label_.signal_query_tooltip().connect(sigc::mem_fun(*this, &Clock::query_tlp_cb));
+   }
+ 
++  if (config_["calendar-popup"].isBool() && config_["calendar-popup"].asBool()) {
++    label_.set_has_tooltip(false);
++    event_box_.set_has_tooltip(false);
++    desktop_calendar_ = std::make_unique<DesktopCalendar>(event_box_, "@calendar-data@");
++  }
++
+   thread_ = [this] {
+     dp.emit();
+     thread_.sleep_for(interval_ - system_clock::now().time_since_epoch() % interval_);
+@@ -159,5 +165,6 @@
+ }
+ 
+ auto waybar::modules::Clock::update() -> void {
++  if (desktop_calendar_) desktop_calendar_->refresh_today();
+   const auto* tz = tzList_[tzCurrIdx_] != nullptr ? tzList_[tzCurrIdx_] : local_zone();
+   const zoned_time now{tz, floor<seconds>(system_clock::now())};

@@ -38,7 +38,8 @@
   },
   "clock": {
     "format": "{:%a %d %b  %H:%M}",
-    "tooltip-format": "<tt>{calendar}</tt>"
+    "tooltip": false,
+    "calendar-popup": true
   },
   "custom/settings": {
     "format": "",
