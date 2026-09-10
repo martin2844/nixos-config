@@ -37,6 +37,7 @@
     obsidian
     trayscale # Graphical Tailscale client; sign in after activation.
     kdePackages.dolphin
+    kdePackages.gwenview # Default image viewer for Dolphin and desktop links.
     kdePackages.ark
     kdePackages.kio-extras
     kdePackages.kio-fuse
