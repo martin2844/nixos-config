@@ -1,0 +1,112 @@
+/* Uses SwayNC's packaged layout and behavior; only desktop visual overrides. */
+:root {
+  --cc-bg: #202329;
+  --noti-bg: 32, 35, 41;
+  --noti-bg-alpha: 1;
+  --noti-bg-darker: #191c21;
+  --noti-bg-hover: #2b3038;
+  --noti-bg-focus: #343e4c;
+  --noti-border-color: #454b55;
+  --noti-close-bg: #343a44;
+  --noti-close-bg-hover: #474f5d;
+  --text-color: #f2f4f8;
+  --text-color-disabled: #a6afbd;
+  --bg-selected: #8bbcf0;
+  --notification-icon-size: 40px;
+  --notification-app-icon-size: 20px;
+  --notification-group-icon-size: 24px;
+  --border-radius: 14px;
+  --notification-shadow: none;
+  --font-size-summary: 15px;
+  --font-size-body: 14px;
+}
+
+notificationwindow, .control-center {
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+}
+
+.notification-row .notification-background {
+  padding: 8px 16px;
+}
+
+.notification-row .notification-background .notification .notification-default-action {
+  padding: 16px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .image {
+  margin: 2px 14px 2px 0;
+  border-radius: 10px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
+  font-weight: 600;
+  margin-right: 16px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body {
+  color: #cbd2dd;
+  margin-top: 6px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+  color: #a6afbd;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.close-button {
+  min-width: 22px;
+  min-height: 22px;
+  margin-top: 12px;
+  margin-right: 20px;
+}
+
+.notification-row .notification-background .notification.critical {
+  border-color: #e6a080;
+}
+
+.notification-row .notification-background .notification .notification-alt-actions {
+  padding: 0 12px 10px;
+}
+
+.notification-row .notification-background .notification .notification-action > button {
+  background: #343a44;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.notification-row .notification-background .notification .notification-action > button:hover {
+  background: #474f5d;
+}
+
+.control-center {
+  border: 1px solid #454b55;
+  padding: 10px 0;
+}
+
+.widget-title, .widget-dnd {
+  margin: 4px 16px;
+  padding: 10px 4px;
+}
+
+.widget-title > label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.widget-title > button {
+  background: #343a44;
+  color: #f2f4f8;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.notification-group .notification-group-headers {
+  margin: 10px 20px;
+}
+
+.notification-group:focus {
+  border-radius: 14px;
+  background: #2b3038;
+}

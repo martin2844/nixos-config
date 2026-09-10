@@ -2,8 +2,8 @@
   "ignore-gtk-theme": true,
   "positionX": "right",
   "positionY": "top",
-  "control-center-width": 400,
-  "notification-window-width": 400,
+  "control-center-width": 460,
+  "notification-window-width": 460,
   "timeout": 8,
   "timeout-critical": 0,
   "widgets": [
@@ -11,5 +11,19 @@
     "dnd",
     "notifications"
   ],
-  "scripts": {}
+  "scripts": {},
+  "cssPriority": "user",
+  "image-visibility": "always",
+  "control-center-margin-top": 12,
+  "control-center-margin-right": 12,
+  "control-center-margin-bottom": 12,
+  "widget-config": {
+    "title": {
+      "text": "Notifications",
+      "button-text": "Clear all"
+    },
+    "dnd": {
+      "text": "Do not disturb"
+    }
+  }
 }
