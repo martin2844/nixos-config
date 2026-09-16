@@ -10,8 +10,17 @@ available windows. The tooltip lists the actual window lengths, local reset
 times, and other model buckets separately. No five-hour window is assumed.
 At 25% remaining it turns amber; at 10% it turns red. Missing data, failed
 requests, and elapsed reset timestamps show `Codex —` instead of a guessed value.
-Waybar polls every 120 seconds; each request times out after 15 seconds and its
-child process is terminated. Clicking opens the installed ChatGPT desktop app.
+Waybar polls every 15 seconds; each request times out after 15 seconds and its
+child process is terminated. The tooltip includes the local time of the last
+successful query, including seconds, so an old reading is visible. The allowance
+comes from the server; its value can remain unchanged between queries.
+Right-clicking refreshes immediately using Waybar's `exec-on-event` behavior;
+left-clicking opens the installed ChatGPT desktop app.
+
+The click launcher explicitly uses `uwsm app -t service`, which returns after
+starting the app. Waybar's polling worker waits for click commands to exit;
+UWSM's default `scope` mode can hold that worker until ChatGPT closes, freezing
+the percentage regardless of the polling interval.
 
 The `↻` counter shows available earned resets, using the authoritative
 `rateLimitResetCredits.availableCount`, including zero. Missing counts show `—`.
@@ -35,4 +44,13 @@ The regular user-package installer includes this package. For a standalone insta
 
 ```sh
 nix --extra-experimental-features nix-command profile add ./result-codex-usage
+```
+
+When updating an existing install, replace the `codex-usage` profile entry with
+the newly built package, as `scripts/install-user.py` does. Reload Waybar after
+changing its polling interval or click actions (the linked config is read at
+startup):
+
+```sh
+systemctl --user kill --kill-whom=main --signal=SIGUSR2 'app-hypr\x2dwaybar@autostart.service'
 ```

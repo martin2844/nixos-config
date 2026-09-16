@@ -8,6 +8,7 @@ const escape = value => String(value).replace(/[&<>"']/g, c => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;',
 }[c]));
 const number = value => typeof value === 'number' && Number.isFinite(value);
+const refreshSeconds = 15;
 
 function windowLabel(minutes, fallback) {
   if (!number(minutes) || minutes <= 0) return fallback;
@@ -34,7 +35,7 @@ function windows(bucket, now) {
   });
 }
 
-export function unavailable(message = 'No se pudo consultar el uso. Se reintentará en dos minutos.') {
+export function unavailable(message = `No se pudo consultar el uso. Se reintentará en ${refreshSeconds} s. Clic derecho para actualizar.`) {
   return { text: 'Codex —', class: 'unavailable', tooltip: escape(message) };
 }
 
@@ -80,7 +81,10 @@ export function formatUsage(result, now = Date.now()) {
     const details = windows(other, now);
     if (details.length) lines.push('', other.limitName || id, ...details.map(w => w.detail));
   }
-  lines.push('', 'Actualización cada 2 min · clic para abrir ChatGPT');
+  lines.push('', `Consultado: ${new Date(now).toLocaleString('es-ES', {
+    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit',
+  })}`, `Actualización cada ${refreshSeconds} s · clic derecho para actualizar`,
+  'Clic para abrir ChatGPT');
   if (expired) return { text: `Codex —${resets.suffix}`, class: 'unavailable', tooltip: escape(lines.join('\n')) };
   return {
     text: `Codex ${remaining.toFixed(0)}%${resets.suffix}`,

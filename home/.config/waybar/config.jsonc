@@ -49,9 +49,11 @@
   "custom/codex": {
     "exec": "/home/martin/.nix-profile/bin/codex-usage",
     "return-type": "json",
-    "interval": 120,
+    "interval": 15,
     "format": "{text}",
-    "on-click": "uwsm app -- chatgpt"
+    "on-click": "uwsm app -t service -- chatgpt",
+    "on-click-right": "true",
+    "exec-on-event": true
   },
   "bluetooth": {
     "format": "",
