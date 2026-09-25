@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Apagar Paperless
+Comment=Detener Paperless y liberar sus recursos hasta volver a abrirlo
+Exec=/home/martin/.local/bin/ediloco-app paperless --stop
+Icon=system-shutdown
+Terminal=false
+Categories=Office;
+Keywords=Paperless;Documentos;Ediloco;Apagar;Detener;
+StartupNotify=false

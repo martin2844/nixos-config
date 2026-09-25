@@ -1,0 +1,43 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+process.chdir(path.dirname(fileURLToPath(import.meta.url)));
+const env=Object.fromEntries((await fs.readFile('.env','utf8')).trim().split('\n').map(line=>{const i=line.indexOf('=');return [line.slice(0,i),line.slice(i+1)];}));
+const base='http://127.0.0.1:8010';
+const login=await fetch(`${base}/api/token/`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'martin',password:env.ADMIN_PASSWORD})});
+if(!login.ok)throw new Error(`Login ${login.status}`);
+const {token}=await login.json();
+const request=async(url,options={})=>{const res=await fetch(base+url,{...options,headers:{Authorization:`Token ${token}`,...options.headers},signal:AbortSignal.timeout(600000)});if(!res.ok)throw new Error(`${url}: ${res.status}`);return res;};
+const get=async url=>(await request(url)).json();
+const report={fecha:new Date().toISOString(),busquedas:{}};
+const documents=[];let next='/api/documents/?page_size=100';
+while(next){const page=await get(next);documents.push(...page.results);next=page.next?new URL(page.next).pathname+new URL(page.next).search:null;}
+report.documentos=documents.length;
+report.conTexto=documents.filter(d=>d.content?.trim().length>20).length;
+for(const query of ['casa','dni','pasaporte']){
+  const found=await get(`/api/documents/?query=${encodeURIComponent(query)}&page_size=100`);
+  report.busquedas[query]=found.count;
+  if(!found.count)throw new Error(`La búsqueda ${query} no devuelve documentos.`);
+}
+console.log(JSON.stringify(report));
+const candidate=documents.find(d=>/escritura_liviana/i.test(d.title))??documents.find(d=>/AVISO DE OBRA/i.test(d.title));
+if(!candidate)throw new Error('Falta documento de vivienda para probar IA.');
+const started=Date.now();
+const suggestions=await get(`/api/documents/${candidate.id}/ai_suggestions/`);
+await fs.writeFile('state/prueba-sugerencias.json',JSON.stringify(suggestions,null,2),{mode:0o600});
+report.sugerencias={documento:candidate.id,segundos:Math.round((Date.now()-started)/1000),campos:Object.keys(suggestions)};
+console.log('Sugerencias IA recibidas.');
+const chatStart=Date.now();
+const res=await request('/api/documents/chat/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:'¿Qué documentos tengo sobre escrituras o trámites de mi casa? Respondé brevemente, sin datos personales ni direcciones, e indicá qué documentos consultar.'})});
+const answer=await res.text();
+await fs.writeFile('state/prueba-chat.txt',answer,{mode:0o600});
+const [text,trailer]=answer.split('\n\n__PAPERLESS_CHAT_METADATA__');
+if(!trailer||/Sorry, something went wrong|couldn't find any content/.test(text))throw new Error('El chat no devolvió fuentes válidas. Revisar state/prueba-chat.txt.');
+const references=JSON.parse(trailer).references;
+if(!references.length)throw new Error('El chat devolvió cero fuentes.');
+report.chat={segundos:Math.round((Date.now()-chatStart)/1000),referencias:references.map(r=>r.id),caracteres:text.length};
+const models=await (await fetch('http://127.0.0.1:11434/api/ps')).json();
+report.modelos=models.models.map(m=>({nombre:m.name,bytes:m.size,bytesGPU:m.size_vram}));
+if(!report.modelos.some(m=>m.nombre.startsWith('qwen3.5')&&m.bytesGPU>0))throw new Error('No se confirmó el uso de GPU de Qwen.');
+await fs.writeFile('state/prueba-servicio.json',JSON.stringify(report,null,2),{mode:0o600});
+console.log(JSON.stringify(report,null,2));

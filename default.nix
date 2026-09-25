@@ -6,6 +6,7 @@ in
     (import ((import ./nix/nixpkgs.nix) + "/nixos") {
       configuration = ./hosts/nixos/configuration.nix;
     }).system;
+  ediloco-tools = import ./packages/ediloco-tools { inherit pkgs; };
   chatgpt = import ./packages/chatgpt { inherit pkgs; };
   slack = pkgs.slack;
   sf-mono = import ./packages/sf-mono { inherit pkgs; };

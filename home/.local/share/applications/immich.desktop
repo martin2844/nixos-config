@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Immich
+GenericName=Biblioteca de fotos
+Comment=Iniciar y abrir las fotos de Ediloco con búsqueda visual y reconocimiento de personas
+Exec=/home/martin/.local/bin/ediloco-app immich
+Icon=folder-pictures
+Terminal=false
+Categories=Graphics;Photography;
+Keywords=Immich;Fotos;Photos;Ediloco;Personas;Galería;
+StartupNotify=false

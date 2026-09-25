@@ -1,0 +1,127 @@
+name: documentos-ediloco
+
+x-persistent: &persistent
+  type: bind
+  bind:
+    create_host_path: false
+
+services:
+  broker:
+    image: valkey/valkey:9-alpine
+    restart: "no"
+    volumes:
+      - <<: *persistent
+        source: ${DATA_ROOT}/redis
+        target: /data
+  db:
+    image: postgres:18
+    restart: "no"
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - <<: *persistent
+        source: ${DATA_ROOT}/postgres
+        target: /var/lib/postgresql
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U paperless"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  ollama:
+    image: ollama/ollama:0.34.3-rocm
+    restart: "no"
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+    ports:
+      - "127.0.0.1:11434:11434"
+    environment:
+      OLLAMA_CONTEXT_LENGTH: "8192"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "2"
+      OLLAMA_KEEP_ALIVE: "10m"
+      OLLAMA_FLASH_ATTENTION: "1"
+      OLLAMA_NO_CLOUD: "true"
+    volumes:
+      - <<: *persistent
+        source: ${DATA_ROOT}/ollama
+        target: /root/.ollama
+  webserver:
+    image: documentos-ediloco-paperless:3.2.1
+    pull_policy: build
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_started
+      gotenberg:
+        condition: service_started
+      tika:
+        condition: service_started
+      ollama:
+        condition: service_started
+    ports:
+      - "127.0.0.1:8010:8000"
+    environment:
+      USERMAP_UID: "1000"
+      USERMAP_GID: "100"
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_DBPASS: ${DB_PASSWORD}
+      PAPERLESS_SECRET_KEY: ${SECRET_KEY}
+      PAPERLESS_ADMIN_USER: martin
+      PAPERLESS_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      PAPERLESS_AUTO_LOGIN_USERNAME: martin
+      PAPERLESS_URL: http://localhost:8010
+      PAPERLESS_ALLOWED_HOSTS: localhost,127.0.0.1,webserver
+      PAPERLESS_CSRF_TRUSTED_ORIGINS: http://localhost:8010,http://127.0.0.1:8010
+      PAPERLESS_TIME_ZONE: Europe/Madrid
+      PAPERLESS_APP_TITLE: Documentos Ediloco
+      PAPERLESS_OCR_LANGUAGE: spa+eng+por
+      PAPERLESS_OCR_LANGUAGES: por
+      PAPERLESS_TASK_WORKERS: "4"
+      PAPERLESS_THREADS_PER_WORKER: "2"
+      PAPERLESS_WORKER_TIMEOUT: "7200"
+      PAPERLESS_CONSUMER_DISABLE: "true"
+      PAPERLESS_CONSUMER_DELETE_DUPLICATES: "true"
+      PAPERLESS_TIKA_ENABLED: "1"
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
+      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+      PAPERLESS_EMAIL_TASK_CRON: disable
+      PAPERLESS_AI_ENABLED: "true"
+      PAPERLESS_AI_LLM_BACKEND: ollama
+      PAPERLESS_AI_LLM_MODEL: qwen3.5:9b
+      PAPERLESS_AI_LLM_ENDPOINT: http://ollama:11434
+      PAPERLESS_AI_LLM_OUTPUT_LANGUAGE: es
+      PAPERLESS_AI_LLM_CONTEXT_SIZE: "8192"
+      PAPERLESS_AI_LLM_REQUEST_TIMEOUT: "300"
+      PAPERLESS_AI_LLM_EMBEDDING_BACKEND: ollama
+      PAPERLESS_AI_LLM_EMBEDDING_MODEL: bge-m3
+      PAPERLESS_AI_LLM_EMBEDDING_CHUNK_SIZE: "1024"
+    volumes:
+      - <<: *persistent
+        source: ${DATA_ROOT}/data
+        target: /usr/src/paperless/data
+      - <<: *persistent
+        source: ${DATA_ROOT}/media
+        target: /usr/src/paperless/media
+      - <<: *persistent
+        source: ${DATA_ROOT}/export
+        target: /usr/src/paperless/export
+  gotenberg:
+    image: gotenberg/gotenberg:8.37
+    restart: "no"
+    command:
+      - gotenberg
+      - --chromium-disable-javascript=true
+      - --chromium-allow-list=file:///tmp/.*
+  tika:
+    image: apache/tika:3.3.1.0
+    restart: "no"

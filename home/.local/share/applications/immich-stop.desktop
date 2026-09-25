@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Apagar Immich
+Comment=Detener la biblioteca de fotos de Ediloco hasta volver a abrirla
+Exec=/home/martin/.local/bin/ediloco-app immich --stop
+Icon=system-shutdown
+Terminal=false
+Categories=Graphics;Photography;
+Keywords=Immich;Fotos;Ediloco;Apagar;Detener;
+StartupNotify=false

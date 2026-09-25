@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {connect,saveJSON} from './immich-api.mjs';
+process.chdir(path.dirname(fileURLToPath(import.meta.url)));
+const {api}=await connect();
+const stats=await api('/server/statistics');
+const queues=await api('/queues');
+const libraries=await api('/libraries');
+const result={date:new Date().toISOString(),stats,queues,libraries:libraries.map(l=>({id:l.id,name:l.name,assetCount:l.assetCount,refreshedAt:l.refreshedAt}))};
+await saveJSON('state/progreso.json',result);
+console.log(JSON.stringify(result,null,2));

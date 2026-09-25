@@ -47,6 +47,10 @@ part of Git. After first activation, reconnect the receiver if access is denied.
 
 ## Custom software included
 
+- [Paperless and Immich](docs/EDILOCO.md): local document and photo libraries on
+  Ediloco. Both appear in the Super+Space application launcher. Service sources,
+  launchers and restore scripts are tracked; credentials and media stay outside Git.
+
 - [Codex usage indicator](packages/codex-usage/): Waybar shows the remaining
   Codex allowance and available resets, with renewal and expiry dates in the
   tooltip. Installed by the user-package installer; uses your Codex CLI login.

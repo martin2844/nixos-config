@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Paperless
+GenericName=Buscador de documentos
+Comment=Iniciar y abrir los documentos de Ediloco con OCR y búsqueda local
+Exec=/home/martin/.local/bin/ediloco-app paperless
+Icon=folder-documents
+Terminal=false
+Categories=Office;
+Keywords=Paperless;Documentos;Ediloco;OCR;DNI;Pasaporte;
+StartupNotify=false

@@ -41,7 +41,11 @@ if [[ "$mode" == --check ]]; then
 fi
 sudo -v
 "$python/bin/python3" "$repo/scripts/install-user.py"
+"$python/bin/python3" "$repo/scripts/install-ediloco.py"
 "$python/bin/python3" "$repo/scripts/link-home.py" --apply
+systemctl --user daemon-reload
+# Libraries are opened on demand. Also remove legacy indexing autostart.
+bash "$repo/scripts/configure-ediloco-on-demand.sh"
 "$HOME/.nix-profile/bin/desktop-theme"
 mkdir -p "$HOME/Pictures/Screenshots"
 "$repo/scripts/rebuild" "${mode#--}"

@@ -1,0 +1,13 @@
+[Unit]
+Description=Paperless local en Ediloco
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/martin/Projects/documentos-ediloco
+ExecStart=/home/martin/Projects/documentos-ediloco/iniciar.sh
+ExecStop=/home/martin/Projects/documentos-ediloco/detener.sh
+TimeoutStartSec=300
+TimeoutStopSec=300
+
+# Started explicitly by the desktop launcher; never at login.

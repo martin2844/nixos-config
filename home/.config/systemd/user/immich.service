@@ -1,0 +1,13 @@
+[Unit]
+Description=Immich local en Ediloco
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/martin/Projects/immich-ediloco
+ExecStart=/home/martin/Projects/immich-ediloco/iniciar.sh
+ExecStop=/home/martin/Projects/immich-ediloco/detener.sh
+TimeoutStartSec=300
+TimeoutStopSec=150
+
+# Started explicitly by the desktop launcher; never at login.

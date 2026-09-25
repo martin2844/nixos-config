@@ -15,6 +15,7 @@ packages = {'chatgpt-desktop': 'chatgpt', 'nmgui': 'internet-panel',
             'lazyvim-development-tools': 'nvim-tools', 'networkmanager_dmenu': 'network-menu',
             'desktop-wallpapers': 'wallpapers', 'desktop-wallpaper-tools': 'wallpaper-tools', 'waybar': 'waybar'}
 packages['desktop-controls'] = 'desktop-controls'
+packages['ediloco-tools'] = 'ediloco-tools'
 outputs = {}
 packages['hyprmod'] = 'hyprmod'
 packages['slack'] = 'slack'

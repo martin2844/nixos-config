@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+case "${1:-}" in
+  paperless) title=Paperless; project=documentos-ediloco; url=http://localhost:8010; ping=http://127.0.0.1:8010/ ;;
+  immich) title=Immich; project=immich-ediloco; url=http://localhost:2283; ping=http://127.0.0.1:2283/api/server/ping ;;
+  *) echo 'Uso: ediloco-app paperless|immich [--stop]' >&2; exit 2 ;;
+esac
+if (( $# > 2 )) || [[ -n "${2:-}" && "$2" != --stop ]]; then
+  echo 'Uso: ediloco-app paperless|immich [--stop]' >&2
+  exit 2
+fi
+app=$1
+notify() { notify-send "$@" || true; }
+# Serialize launcher requests without holding the lock in the browser process.
+lock_dir=${XDG_RUNTIME_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/ediloco}
+mkdir -p -- "$lock_dir"
+exec 9>"$lock_dir/ediloco-$app.lock"
+flock 9
+if [[ "${2:-}" == --stop ]]; then
+  notify "$title" 'Apagando el servicio local…'
+  # The direct stop also covers containers started by the indexing CLI while
+  # the user unit is inactive. It is safe to repeat and preserves all volumes.
+  if ! systemctl --user stop "$app.service" || ! "$HOME/Projects/$project/detener.sh"; then
+    notify --urgency=critical "$title" 'No se pudo apagar. Revisá los registros del servicio.'
+    exit 1
+  fi
+  notify "$title" 'Apagado. Volverá a iniciarse cuando lo abras desde el launcher.'
+  exit 0
+fi
+if [[ "$(findmnt -no UUID --target /run/media/martin/Ediloco 2>/dev/null || true)" != 1c5b930d-5d2f-4b13-9577-661c73bc1993 ]]; then
+  notify "$title" 'Conectá y montá Ediloco para abrir la biblioteca.'
+  exit 1
+fi
+ready() {
+  local status
+  status=$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 3 "$ping") || return 1
+  [[ "$status" == 200 || "$status" == 302 || "$status" == 401 || "$status" == 403 ]]
+}
+if ! ready; then
+  notify "$title" 'Iniciando el servicio local…'
+  action=start
+  # A oneshot can remain active after its containers have stopped or failed.
+  if systemctl --user is-active --quiet "$app.service"; then action=restart; fi
+  if ! systemctl --user "$action" "$app.service"; then
+    notify --urgency=critical "$title" 'No se pudo iniciar. Revisá el estado del servicio de usuario.'
+    exit 1
+  fi
+  for ((attempt=0;attempt<60;attempt++)); do
+    if ready; then break; fi
+    sleep 2
+  done
+fi
+if ! ready; then
+  notify --urgency=critical "$title" 'El servicio todavía no responde. Consultá sus registros.'
+  exit 1
+fi
+flock -u 9
+exec 9>&-
+exec xdg-open "$url"

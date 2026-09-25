@@ -1,4 +1,12 @@
 {
+  ".local/share/applications/paperless.desktop": "home/.local/share/applications/paperless.desktop",
+  ".local/share/applications/immich.desktop": "home/.local/share/applications/immich.desktop",
+  ".local/share/applications/paperless-stop.desktop": "home/.local/share/applications/paperless-stop.desktop",
+  ".local/share/applications/immich-stop.desktop": "home/.local/share/applications/immich-stop.desktop",
+  ".local/bin/ediloco-app": "home/.local/bin/ediloco-app",
+  ".config/systemd/user/paperless.service": "home/.config/systemd/user/paperless.service",
+  ".config/systemd/user/immich.service": "home/.config/systemd/user/immich.service",
+  ".config/systemd/user/documentos-indexacion.service": "services/paperless/documentos-indexacion.service",
   ".zshrc": "home/.zshrc",
   ".zprofile": "home/.zprofile",
   ".config/hypr": "home/.config/hypr",

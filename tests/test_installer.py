@@ -46,6 +46,7 @@ fi
             self.assertIn('-A ' + attr + ' ', log)
         self.assertNotIn('FORBIDDEN', log)
         self.assertIn('-A codex-sound ', log)
+        self.assertIn('-A ediloco-tools ', log)
         self.assertFalse(home_created)
 
     def test_failed_build_stops_before_installing(self):
