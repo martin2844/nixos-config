@@ -23,3 +23,6 @@ credentials.env
 
 # Local wallpaper copies; curated images are restored from the Nix package.
 /home/.config/hypr/wallpaper-custom.*
+
+# Dated backups of linked configs created during local edits.
+/home/**/*.bak-*

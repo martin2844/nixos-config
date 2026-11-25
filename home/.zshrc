@@ -22,3 +22,6 @@ alias ls='ls --color=tty'
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
+
+# Optional PATH/env additions written by local tool installers (not in Git).
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
