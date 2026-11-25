@@ -24,4 +24,5 @@ in
   zsh = import ./packages/zsh { inherit pkgs; };
   codex-sound = import ./packages/codex-sound { inherit pkgs; };
   codex-usage = import ./packages/codex-usage { inherit pkgs; };
+  claude-usage = import ./packages/claude-usage { inherit pkgs; };
 }

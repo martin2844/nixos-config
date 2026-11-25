@@ -16,14 +16,24 @@ packages = {'chatgpt-desktop': 'chatgpt', 'nmgui': 'internet-panel',
             'desktop-wallpapers': 'wallpapers', 'desktop-wallpaper-tools': 'wallpaper-tools', 'waybar': 'waybar'}
 packages['desktop-controls'] = 'desktop-controls'
 packages['ediloco-tools'] = 'ediloco-tools'
+packages['trayscale'] = 'trayscale'
+packages['calendar-reminders'] = 'calendar-reminders'
+packages['pbclipboard'] = 'pbclipboard'
 outputs = {}
 packages['hyprmod'] = 'hyprmod'
 packages['slack'] = 'slack'
+packages['opencode'] = 'opencode'
+packages['proton-vpn'] = 'proton-vpn'
+packages['qbittorrent-desktop'] = 'qbittorrent'
 packages['omarchy-screenshot-preview'] = 'screenshot-preview'
 packages['desktop-zsh'] = 'zsh'
 packages['codex-complete-sound'] = 'codex-sound'
+packages['codex-border-state'] = 'codex-border'
+packages['nixos-remote-desktop'] = 'remote-desktop'
 packages['codex-usage'] = 'codex-usage'
+packages['claude-usage'] = 'claude-usage'
 packages['desktop-theme'] = 'desktop-theme'
+packages['windows-vm-launcher'] = 'windows-vm'
 for name, attr in packages.items():
     outputs[name] = subprocess.check_output(
         ['nix-build', str(repo), '-A', attr, '-o', str(repo / ('result-' + attr))], text=True).strip()
@@ -52,3 +62,4 @@ for path, target in [(blink, 'nvim-blink'), (outputs['lazyvim-development-tools'
     subprocess.run(['nix-store', '--add-root', str(Path.home() / '.local/share' / target),
                     '--indirect', '-r', path], check=True)
 runpy.run_path(str(repo / 'scripts/configure-codex-sound.py'), run_name='__main__')
+runpy.run_path(str(repo / 'scripts/configure-qbittorrent.py'), run_name='__main__')

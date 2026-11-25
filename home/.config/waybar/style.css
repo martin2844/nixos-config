@@ -36,6 +36,12 @@ tooltip label { font-size: 12px; padding: 6px; }
 #custom-codex.critical { color: #f08080; }
 #custom-codex.unavailable { color: #8993a2; }
 
+#custom-claude { padding: 0 8px; color: #a2b5ca; border-radius: 5px; }
+#custom-claude:hover { background: #303a48; }
+#custom-claude.warning { color: #e5bd78; }
+#custom-claude.critical { color: #f08080; }
+#custom-claude.unavailable { color: #8993a2; }
+
 #custom-separator { color: #56616f; margin: 0 9px; }
 #tray.network { padding: 0 9px; }
 #custom-tailscale { font-size: 17px; padding: 0 8px; min-width: 24px; }

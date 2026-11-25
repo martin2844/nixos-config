@@ -55,6 +55,10 @@ part of Git. After first activation, reconnect the receiver if access is denied.
   Codex allowance and available resets, with renewal and expiry dates in the
   tooltip. Installed by the user-package installer; uses your Codex CLI login.
 
+- [Claude usage indicator](packages/claude-usage/): Waybar shows the remaining
+  Claude plan allowance (5-hour session and weekly limits) with reset times in
+  the tooltip. Installed by the user-package installer; uses your Claude Code login.
+
 - [Codex completion sound](packages/codex-sound/): the installer configures a
   sound after each completed response and disables Codex's desktop toasts.
 - [Screenshot preview](packages/screenshot-preview/): draggable bottom-right
