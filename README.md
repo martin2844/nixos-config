@@ -213,6 +213,14 @@ sound continues. Pulse speed, rotation speed and colors are editable at
 the top of the Lua file. Reload with `hyprctl reload config-only`; remove
 its `dofile` line and disable the service to turn off the effect.
 
+[Remote desktop from the Mac](docs/REMOTE-DESKTOP.md) shares the current
+Hyprland session through Tailscale using macOS Screen Sharing. The user
+installer enables `remote-desktop.service`; WayVNC binds only to loopback,
+and Tailscale Serve exposes its authenticated connection on tailnet port
+5900. Credentials stay in the private user configuration. Leave the PC
+powered on and logged into Hyprland while traveling; the service does not
+provide a desktop login after reboot.
+
 ## Prepare another PC without changing this one
 
 On the **destination PC**, after installing NixOS and cloning this repo:

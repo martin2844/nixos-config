@@ -1,0 +1,18 @@
+[Unit]
+Description=Share Hyprland desktop privately over Tailscale
+After=graphical-session-pre.target
+PartOf=graphical-session.target
+ConditionEnvironment=XDG_CURRENT_DESKTOP=Hyprland
+
+[Service]
+UMask=0077
+ExecStart=%h/.nix-profile/bin/nixos-remote-desktop run
+ExecStopPost=%h/.nix-profile/bin/nixos-remote-desktop unpublish
+# WayVNC can exit successfully when the last monitor disconnects.
+Restart=always
+RestartSec=5
+TimeoutStartSec=45
+TimeoutStopSec=15
+
+[Install]
+WantedBy=graphical-session.target

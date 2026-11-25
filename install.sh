@@ -46,6 +46,7 @@ sudo -v
 systemctl --user daemon-reload
 systemctl --user enable --now calendar-reminders.timer
 systemctl --user enable --now codex-border.service
+systemctl --user enable --now remote-desktop.service
 # Libraries are opened on demand. Also remove legacy indexing autostart.
 bash "$repo/scripts/configure-ediloco-on-demand.sh"
 "$HOME/.nix-profile/bin/desktop-theme"
