@@ -16,6 +16,7 @@
     "custom/separator",
     "tray#network",
     "bluetooth",
+    "custom/mouse-battery",
     "pulseaudio",
     "custom/tailscale",
     "custom/codex",
@@ -64,6 +65,14 @@
     "on-click": "uwsm app -t service -- xdg-open https://claude.ai/settings/usage",
     "on-click-right": "true",
     "exec-on-event": true
+  },
+  "custom/mouse-battery": {
+    "exec": "/home/martin/.nix-profile/bin/desktop-controls mouse-battery-status",
+    "return-type": "json",
+    "interval": 10,
+    "format": "{text}",
+    "hide-empty-text": true,
+    "on-click": "uwsm app -t service -- polychromatic-controller"
   },
   "bluetooth": {
     "format": "",

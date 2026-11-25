@@ -11,7 +11,7 @@ window#waybar { background: #1b2028; color: #e5e9ef; border-bottom: 1px solid #3
 
 /* Compact, evenly spaced controls; icon glyphs need room beyond a text cell. */
 .modules-right { margin-right: 10px; }
-#network, #bluetooth, #pulseaudio, #cpu, #memory,
+#network, #bluetooth, #custom-mouse-battery, #pulseaudio, #cpu, #memory,
 #custom-notifications, #custom-settings {
     font-family: "JetBrainsMono Nerd Font";
     font-size: 17px;
@@ -21,10 +21,14 @@ window#waybar { background: #1b2028; color: #e5e9ef; border-bottom: 1px solid #3
     border-radius: 5px;
 }
 #custom-settings { margin-right: 3px; }
-#network:hover, #bluetooth:hover, #pulseaudio:hover,
+#network:hover, #bluetooth:hover, #custom-mouse-battery:hover, #pulseaudio:hover,
 #custom-notifications:hover, #custom-settings:hover { background: #303a48; }
 #bluetooth.off, #bluetooth.disabled, #network.disconnected { color: #8993a2; }
 #bluetooth.connected { color: #a2b5ca; }
+#custom-mouse-battery { color: #a2b5ca; }
+#custom-mouse-battery.warning { color: #e5bd78; }
+#custom-mouse-battery.critical { color: #f08080; }
+#custom-mouse-battery.charging { color: #a3be8c; }
 tooltip { background: #20252e; border: 1px solid #56677d; border-radius: 6px; }
 tooltip label { font-size: 12px; padding: 6px; }
 

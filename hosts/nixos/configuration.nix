@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ./hyprland.nix
     ./appearance.nix
+    ./openrazer.nix
   ];
 
   # Use the systemd-boot EFI boot loader.

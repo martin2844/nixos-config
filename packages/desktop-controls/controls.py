@@ -9,6 +9,12 @@ def run(*args):
     return subprocess.check_output(args, text=True, timeout=4).strip()
 
 
+if sys.argv[1:] == ['mouse-battery-status']:
+    from mouse_battery import status
+    print(json.dumps(status()))
+    raise SystemExit(0)
+
+
 if sys.argv[1:] == ['tailscale-status']:
     try:
         state = json.loads(run('tailscale', 'status', '--json')).get('BackendState', 'Unknown')
@@ -25,7 +31,7 @@ from gi.repository import Gtk, Gdk, Gio, GLib, GtkLayerShell, Pango
 
 mode = sys.argv[1] if len(sys.argv) > 1 else 'audio'
 if mode not in ('audio', 'bluetooth', 'windows'):
-    raise SystemExit('Expected audio, bluetooth, windows, or tailscale-status')
+    raise SystemExit('Expected audio, bluetooth, windows, tailscale-status, or mouse-battery-status')
 
 
 class Panel(Gtk.Application):

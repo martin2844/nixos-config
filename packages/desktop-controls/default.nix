@@ -20,7 +20,7 @@ pkgs.stdenvNoCC.mkDerivation {
   dontBuild = true;
   installPhase = ''
     mkdir -p $out/bin $out/share/desktop-controls
-    cp controls.py $out/share/desktop-controls/
+    cp controls.py mouse_battery.py $out/share/desktop-controls/
     makeWrapper ${python}/bin/python3 $out/bin/desktop-controls \
       --add-flags $out/share/desktop-controls/controls.py \
       --prefix PATH : ${

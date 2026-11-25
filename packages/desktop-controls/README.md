@@ -13,7 +13,21 @@ Bluetooth's existing pairing agent continues to run in the graphical session.
 
 `desktop-controls tailscale-status` emits Waybar JSON using only BackendState;
 no peer list, addresses or credentials are stored. Clicking the bar icon opens
-the already installed Trayscale GUI. It does not automatically connect or log in.
+the [patched Trayscale GUI](../trayscale/) installed in the user profile. It does
+not automatically connect or log in. The GUI refreshes peer availability from the
+live Tailscale status API so stale network-map snapshots do not mark peers offline.
+
+`desktop-controls mouse-battery-status` reads the Pro Click V2 through OpenRazer's
+session D-Bus API and emits Waybar JSON. It handles receiver and wired USB IDs,
+and returns empty text if the device is absent or its status cannot be read.
+A valid live DPI response is required so a receiver's timeout response does not
+appear as a connected mouse with an empty battery.
+Waybar polls every ten seconds, shows a mouse icon next to Bluetooth, and puts the
+battery percentage and charging state in its tooltip. Low charge changes the
+icon's color; clicking opens Polychromatic. Status queries do not start the daemon
+or modify mouse settings, and require no direct access to input or USB devices.
+The click launcher uses `uwsm app -t service` so Waybar keeps polling while the
+settings window is open. The Waybar package supplies the shared hover-tooltip fix.
 
 Build with `nix-build . -A desktop-controls`. The user installer manages the
 package, while Waybar starts panels on demand through `uwsm app --`.

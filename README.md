@@ -45,6 +45,12 @@ Open Solaar from the launcher, select the mouse, unlock the DPI setting and
 choose a supported value. Solaar saves device settings locally; they are not
 part of Git. After first activation, reconnect the receiver if access is denied.
 
+Razer device support includes OpenRazer and **Polychromatic**, available from the
+application launcher. The Pro Click V2 works through its USB wireless receiver
+or a cable, with DPI, polling rate, lighting and battery controls. Device settings
+stay in the user's OpenRazer configuration outside Git. See
+[OpenRazer setup and checks](docs/OPENRAZER.md).
+
 ## Custom software included
 
 - [Paperless and Immich](docs/EDILOCO.md): local document and photo libraries on
