@@ -135,6 +135,11 @@ file immediately. `git status` / `git diff` show changes; commit them normally.
 Neovim plugin updates also change the tracked lockfile. Keep this checkout in
 place, or rerun the link script after moving it.
 
+The linked `~/.config/menus/applications.menu` imports the installed Plasma menu
+so Dolphin can discover applications and honor file associations under Hyprland.
+After changing file associations, run `kbuildsycoca6 --noincremental` to refresh
+KDE's application cache; no system rebuild or reboot is needed.
+
 Edit system settings in `hosts/nixos/`, not `/etc/nixos`. The original root-owned
 files remain untouched: a bare `sudo nixos-rebuild switch` still reads those old
 files. Use the repository script to explicitly select this configuration:

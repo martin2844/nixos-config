@@ -24,6 +24,7 @@
   ".config/swaync": "home/.config/swaync",
   ".config/networkmanager-dmenu": "home/.config/networkmanager-dmenu",
   ".config/mimeapps.list": "home/.config/mimeapps.list",
+  ".config/menus/applications.menu": "home/.config/menus/applications.menu",
   ".config/hyprland-mimeapps.list": "home/.config/hyprland-mimeapps.list",
   ".local/share/applications/chatgpt.desktop": "home/.local/share/applications/chatgpt.desktop",
   ".config/nvim-tools": "packages/nvim-tools",
