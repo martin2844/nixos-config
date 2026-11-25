@@ -40,6 +40,14 @@ ChatGPT and other account logins are separate. ChatGPT's hash-pinned upstream
 Slack is installed in the managed user profile from pinned nixpkgs. Open Slack
 from the application launcher and sign in to your workspace after installation.
 
+Proton VPN's GUI is installed from pinned nixpkgs in both the system and managed
+user profile. Open **Proton VPN** from the launcher (or run `protonvpn-app`) and
+sign in with your Proton account. NetworkManager manages VPN connections, and
+GNOME Keyring provides credential storage in Plasma and Hyprland. After the first
+system activation, log out and back in to initialize the keyring session.
+Credentials and VPN state stay outside Git. NixOS is not an officially supported
+distribution in [Proton's Linux guide](https://protonvpn.com/support/linux-vpn-setup).
+
 Logitech wireless device support includes Solaar and its device-access rules.
 Open Solaar from the launcher, select the mouse, unlock the DPI setting and
 choose a supported value. Solaar saves device settings locally; they are not
@@ -52,6 +60,14 @@ stay in the user's OpenRazer configuration outside Git. See
 [OpenRazer setup and checks](docs/OPENRAZER.md).
 
 ## Custom software included
+
+- [OpenCode V2](packages/opencode/): hash-pinned official CLI with the NixOS
+  loader fix, installed by the user-package installer. Run `opencode` or
+  `opencode2`; automatic binary updates are disabled in favor of Nix rebuilds.
+
+- [qBittorrent](packages/qbittorrent/): desktop torrent client with 50 hash-pinned
+  public search plugins. The Search tab is enabled for new profiles; settings
+  and downloads stay outside Git. Included in both the system and user installer.
 
 - [Paperless and Immich](docs/EDILOCO.md): local document and photo libraries on
   Ediloco. Both appear in the Super+Space application launcher. Service sources,

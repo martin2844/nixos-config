@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=qBittorrent
+Exec=qbittorrent
+Hidden=true

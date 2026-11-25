@@ -27,6 +27,10 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Secret Service storage for Proton VPN credentials in Plasma and Hyprland.
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
+
   # Container runtime for local development, including the Slab stack.
   virtualisation.docker.enable = true;
 
@@ -102,6 +106,13 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+  services.qbittorrent.enable = false; # Open the desktop client manually.
+
+  # Desktop clients; qBittorrent includes reproducible search-plugin defaults.
+  environment.systemPackages = [
+    (import ../../packages/qbittorrent { inherit pkgs; })
+    pkgs.proton-vpn
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

@@ -8,7 +8,10 @@ in
     }).system;
   ediloco-tools = import ./packages/ediloco-tools { inherit pkgs; };
   chatgpt = import ./packages/chatgpt { inherit pkgs; };
+  opencode = import ./packages/opencode { inherit pkgs; };
   slack = pkgs.slack;
+  proton-vpn = pkgs.proton-vpn;
+  qbittorrent = import ./packages/qbittorrent { inherit pkgs; };
   sf-mono = import ./packages/sf-mono { inherit pkgs; };
   internet-panel = import ./packages/internet-panel { inherit pkgs; };
   nvim-tools = import ./packages/nvim-tools { inherit pkgs; };
@@ -19,6 +22,7 @@ in
   trayscale = import ./packages/trayscale { inherit pkgs; };
   waybar = import ./packages/waybar { inherit pkgs; };
   calendar-reminders = import ./packages/calendar-reminders { inherit pkgs; };
+  pbclipboard = import ./packages/pbclipboard { inherit pkgs; };
   network-menu = pkgs.networkmanager_dmenu;
   hyprmod = import ./packages/hyprmod { inherit pkgs; };
   screenshot-preview = import ./packages/screenshot-preview { inherit pkgs; };
