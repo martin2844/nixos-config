@@ -13,6 +13,7 @@
   ".config/waybar": "home/.config/waybar",
   ".config/systemd/user/app-hypr\\x2dwaybar@autostart.service.d/restart.conf": "home/.config/systemd/user/app-hypr\\x2dwaybar@autostart.service.d/restart.conf",
   ".config/systemd/user/calendar-reminders.service": "home/.config/systemd/user/calendar-reminders.service",
+  ".config/systemd/user/codex-border.service": "home/.config/systemd/user/codex-border.service",
   ".config/systemd/user/calendar-reminders.timer": "home/.config/systemd/user/calendar-reminders.timer",
   ".config/uwsm": "home/.config/uwsm",
   ".config/autostart": "home/.config/autostart",

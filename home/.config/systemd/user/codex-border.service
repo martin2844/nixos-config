@@ -1,0 +1,13 @@
+[Unit]
+Description=Track confirmed idle Codex terminals for rainbow borders
+After=graphical-session-pre.target
+PartOf=graphical-session.target
+ConditionEnvironment=XDG_CURRENT_DESKTOP=Hyprland
+
+[Service]
+ExecStart=%h/.nix-profile/bin/codex-border-state
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target

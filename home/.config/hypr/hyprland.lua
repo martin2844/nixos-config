@@ -68,6 +68,9 @@ hl.window_rule({
 -- HyprMod managed settings, applied after the desktop defaults.
 require("hyprland-gui")
 
+-- Pulse each idle Codex terminal's border until its next turn starts.
+dofile(os.getenv("HOME") .. "/.config/hypr/codex-border.lua")
+
 -- Calendar day editor needs room for the list, time and notes fields.
 hl.window_rule({
     name = "calendar-reminders",

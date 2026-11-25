@@ -193,6 +193,26 @@ The installer runs `scripts/configure-codex-sound.py` after package installation
 it edits the private user config in place with a backup, never copies it into
 this public repo, and refuses to replace an unrelated notification command.
 
+Ghostty windows running Codex also get a rotating rainbow border with a gentle
+2.4-second brightness pulse while idle. The three-pixel border returns to the
+desktop theme when Codex starts its next turn or exits. This lives in
+`home/.config/hypr/codex-border.lua`, loaded by the main Hyprland config, and
+[the state watcher](packages/codex-border/). The watcher reads local Codex
+rollout `task_started`/`task_complete` events and the goal database. A completed
+turn must settle for one second, and an active goal always keeps the normal
+border, including between automatic turns and while waiting for agents.
+Titles only associate a window with its named thread; a missing spinner
+never proves completion. Keep Codex's default `activity`, `thread-name`,
+`project-name` title layout enabled. Unknown, ambiguous, missing or stale
+state keeps the normal border. The watcher currently supports Codex's local
+`state_5.sqlite` and `goals_1.sqlite` schemas; schema changes fail closed.
+The installer enables `codex-border.service` for Hyprland sessions. Each
+window is independent, including focused windows. The animation timer
+sleeps when no idle Codex window is visible, and the existing completion
+sound continues. Pulse speed, rotation speed and colors are editable at
+the top of the Lua file. Reload with `hyprctl reload config-only`; remove
+its `dofile` line and disable the service to turn off the effect.
+
 ## Prepare another PC without changing this one
 
 On the **destination PC**, after installing NixOS and cloning this repo:
