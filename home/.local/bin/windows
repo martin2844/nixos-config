@@ -1,0 +1,2 @@
+#!/run/current-system/sw/bin/bash
+exec /home/martin/.nix-profile/bin/windows-vm-launcher "$@"

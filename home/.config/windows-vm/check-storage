@@ -1,0 +1,6 @@
+#!/run/current-system/sw/bin/bash
+set -euo pipefail
+mount=/run/media/martin/Windows-VMs
+[[ $(findmnt -rn -o UUID --mountpoint "$mount") == e5de2bb9-d182-49a4-b24b-de175d6742c0 ]] || { echo 'Windows: el disco de la VM no está montado.' >&2; exit 1; }
+findmnt -rn --mountpoint "$mount" --options rw >/dev/null
+[[ -d "$mount/Windows" && -d "$mount/Shared" ]]

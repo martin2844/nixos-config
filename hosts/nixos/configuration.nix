@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ./hyprland.nix
     ./appearance.nix
+    ./windows-vm.nix
     ./openrazer.nix
   ];
 

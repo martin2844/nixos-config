@@ -1,0 +1,10 @@
+[Unit]
+Description=Windows desktop with automatic VM shutdown on close
+
+[Service]
+Type=simple
+ExecStartPre=/home/martin/.local/bin/windows --cancel-shutdown
+ExecStart=/home/martin/.local/bin/windows --session
+ExecStopPost=/home/martin/.local/bin/windows --schedule-shutdown
+TimeoutStopSec=30
+Restart=no

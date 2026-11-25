@@ -77,6 +77,10 @@ stay in the user's OpenRazer configuration outside Git. See
   calendar to add or edit a reminder. A user timer sends desktop notifications,
   including overdue reminders after login. Personal data stays outside Git.
 
+- [Windows VM](docs/WINDOWS-VM.md): Docker/KVM, dedicated ext4 storage,
+  desktop launcher and automatic shutdown after closing the window. Windows
+  credentials and VM disks stay outside Git; the host setup is versioned here.
+
 - [Codex usage indicator](packages/codex-usage/): Waybar shows the remaining
   Codex allowance and available resets, with renewal and expiry dates in the
   tooltip. Installed by the user-package installer; uses your Codex CLI login.

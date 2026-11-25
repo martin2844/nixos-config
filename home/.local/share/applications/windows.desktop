@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Windows
+Comment=Escritorio de Windows 11
+Exec=/home/martin/.local/bin/windows
+Icon=/home/martin/.local/share/icons/windows-vm.svg
+Terminal=false
+Categories=System;Emulator;
+Keywords=Windows;VM;
+StartupWMClass=windows-vm
+Actions=Shutdown;
+
+[Desktop Action Shutdown]
+Name=Apagar Windows
+Exec=/run/current-system/sw/bin/systemctl --user stop windows.service

@@ -34,7 +34,17 @@
   ".config/xsettingsd": "home/.config/xsettingsd",
   ".config/waypaper": "home/.config/waypaper",
   ".config/fontconfig/fonts.conf": "home/.config/fontconfig/fonts.conf",
+  ".config/windows-vm/compose.yaml": "home/.config/windows-vm/compose.yaml",
+  ".config/windows-vm/check-storage": "home/.config/windows-vm/check-storage",
+  ".local/share/applications/windows.desktop": "home/.local/share/applications/windows.desktop",
+  ".local/share/icons/windows-vm.svg": "home/.local/share/icons/windows-vm.svg",
   ".local/share/icons/hicolor/scalable/status/network-transmit-receive-symbolic.svg": "home/.local/share/icons/hicolor/scalable/status/network-transmit-receive-symbolic.svg",
+  ".config/systemd/user/windows.service": "home/.config/systemd/user/windows.service",
+  ".config/systemd/user/windows-desktop.service": "home/.config/systemd/user/windows-desktop.service",
+  ".config/systemd/user/windows-idle-shutdown.service": "home/.config/systemd/user/windows-idle-shutdown.service",
+  ".config/systemd/user/windows-idle-shutdown.timer": "home/.config/systemd/user/windows-idle-shutdown.timer",
+  ".local/bin/windows": "home/.local/bin/windows",
+  ".config/windows-vm/oem": "home/.config/windows-vm/oem",
   ".local/bin/openjuice": "home/.local/bin/openjuice",
   ".local/share/applications/openjuice.desktop": "home/.local/share/applications/openjuice.desktop"
 }

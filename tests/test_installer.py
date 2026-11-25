@@ -46,6 +46,7 @@ fi
             self.assertIn('-A ' + attr + ' ', log)
         self.assertNotIn('FORBIDDEN', log)
         self.assertIn('-A codex-sound ', log)
+        self.assertIn('-A windows-vm ', log)
         self.assertIn('-A ediloco-tools ', log)
         self.assertFalse(home_created)
 

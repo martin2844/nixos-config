@@ -1,0 +1,14 @@
+[Unit]
+Description=Windows virtual machine (Docker/KVM)
+
+[Service]
+Type=simple
+Environment=PATH=/run/current-system/sw/bin
+WorkingDirectory=/home/martin/.config/windows-vm
+ExecStartPre=/home/martin/.config/windows-vm/check-storage
+ExecStart=/run/current-system/sw/bin/docker compose up --abort-on-container-exit --no-color
+ExecStop=/run/current-system/sw/bin/docker compose stop --timeout 120
+TimeoutStopSec=150
+# Compose may exit with 128 + SIGTERM after a successful requested shutdown.
+SuccessExitStatus=143
+Restart=no

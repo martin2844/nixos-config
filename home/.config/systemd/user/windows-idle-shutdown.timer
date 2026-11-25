@@ -1,0 +1,8 @@
+[Unit]
+Description=Shut down Windows 30 seconds after its desktop closes
+
+[Timer]
+OnActiveSec=30s
+AccuracySec=1s
+RemainAfterElapse=no
+Unit=windows-idle-shutdown.service

@@ -1,0 +1,48 @@
+name: windows
+services:
+  windows:
+    image: dockurr/windows@sha256:0cff9eb0e7aee9953e55bc682852ca4fdca233145a58ae1ec94f0b0c01a2ed30
+    container_name: windows
+    hostname: windows
+    env_file:
+      - credentials.env
+    environment:
+      VERSION: "11"
+      CONNECTIONS: "16"
+      RAM_SIZE: "16G"
+      CPU_CORES: "8"
+      DISK_SIZE: "256G"
+      HOST: "Windows"
+      VGA: "std"
+      TZ: "Europe/Madrid"
+    devices:
+      - /dev/kvm:/dev/kvm
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "127.0.0.1:8006:8006"
+      - "127.0.0.1:3389:3389/tcp"
+      - "127.0.0.1:3389:3389/udp"
+    volumes:
+      - type: bind
+        source: /run/media/martin/Windows-VMs/Windows
+        target: /storage
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /run/media/martin/Windows-VMs/Shared
+        target: /shared
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /home/martin/.config/windows-vm/oem
+        target: /oem
+        read_only: true
+    restart: "no"
+    stop_grace_period: 2m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

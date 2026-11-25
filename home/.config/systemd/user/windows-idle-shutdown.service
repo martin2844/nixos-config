@@ -1,0 +1,7 @@
+[Unit]
+Description=Gracefully shut down the unused Windows VM
+
+[Service]
+Type=oneshot
+ExecStart=/home/martin/.local/bin/windows --idle-shutdown
+TimeoutStartSec=180

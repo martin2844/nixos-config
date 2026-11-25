@@ -15,5 +15,11 @@ ACCESO.txt
 /services/**/references/
 /services/**/tools/
 
+# Windows runtime secrets and guest-generated state stay outside Git.
+credentials.env
+/home/.config/windows-vm/oem/*.json
+/home/.config/windows-vm/Windows/
+/home/.config/windows-vm/Shared/
+
 # Local wallpaper copies; curated images are restored from the Nix package.
 /home/.config/hypr/wallpaper-custom.*
