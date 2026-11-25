@@ -31,5 +31,6 @@
   ".config/gtk-4.0": "home/.config/gtk-4.0",
   ".config/xsettingsd": "home/.config/xsettingsd",
   ".config/waypaper": "home/.config/waypaper",
-  ".config/fontconfig/fonts.conf": "home/.config/fontconfig/fonts.conf"
+  ".config/fontconfig/fonts.conf": "home/.config/fontconfig/fonts.conf",
+  ".local/share/icons/hicolor/scalable/status/network-transmit-receive-symbolic.svg": "home/.local/share/icons/hicolor/scalable/status/network-transmit-receive-symbolic.svg"
 }

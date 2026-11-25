@@ -155,7 +155,7 @@
     "return-type": "json",
     "interval": 10,
     "format": "{text}",
-    "on-click": "uwsm app -- trayscale"
+    "on-click": "uwsm app -- /home/martin/.nix-profile/bin/trayscale"
   },
   "custom/windows": {
     "format": "󰍜",

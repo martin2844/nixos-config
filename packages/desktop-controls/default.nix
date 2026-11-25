@@ -3,6 +3,7 @@
 }:
 let
   python = pkgs.python3.withPackages (p: [ p.pygobject3 ]);
+  trayscale = import ../trayscale { inherit pkgs; };
 in
 pkgs.stdenvNoCC.mkDerivation {
   pname = "desktop-controls";
@@ -28,7 +29,7 @@ pkgs.stdenvNoCC.mkDerivation {
           pkgs.tailscale
           pkgs.pavucontrol
           pkgs.blueman
-          pkgs.trayscale
+          trayscale
           pkgs.hyprland
           pkgs.uwsm
         ]

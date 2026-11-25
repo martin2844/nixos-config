@@ -1,0 +1,45 @@
+--- a/internal/tsutil/poller.go
++++ b/internal/tsutil/poller.go
+@@ -97,6 +97,9 @@
+ func (p *Poller) watchIPN(ctx context.Context) {
+ 	const watcherOpts = ipn.NotifyInitialState | ipn.NotifyInitialPrefs | ipn.NotifyInitialNetMap | ipn.NotifyNoPrivateKeys | ipn.NotifyWatchEngineUpdates | ipn.NotifyRateLimit
+ 
++	set := make(chan *IPNStatus)
++	go p.publishIPN(ctx, set)
++
+ watch:
+ 	watcher, err := localClient.WatchIPNBus(ctx, watcherOpts)
+ 	if err != nil {
+@@ -110,21 +113,6 @@
+ 	}
+ 	defer watcher.Close()
+ 
+-	set := make(chan *IPNStatus)
+-	go func() {
+-		var get chan *IPNStatus
+-		var s *IPNStatus
+-		for {
+-			select {
+-			case <-ctx.Done():
+-				return
+-			case s = <-set:
+-				get = p.getIPN
+-				p.New(s)
+-			case get <- s:
+-			}
+-		}
+-	}()
+ 
+ 	var s IPNStatus
+ 	for {
+@@ -186,10 +174,6 @@
+ 		case <-ctx.Done():
+ 			return
+ 		case set <- c:
+-		}
+-		select {
+-		case p.nextIPN <- c:
+-		default:
+ 		}
+ 	}
+ }

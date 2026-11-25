@@ -16,6 +16,7 @@ in
   wallpapers = import ./packages/wallpapers { inherit pkgs; };
   wallpaper-tools = import ./packages/wallpaper-tools { inherit pkgs; };
   desktop-controls = import ./packages/desktop-controls { inherit pkgs; };
+  trayscale = import ./packages/trayscale { inherit pkgs; };
   waybar = import ./packages/waybar { inherit pkgs; };
   calendar-reminders = import ./packages/calendar-reminders { inherit pkgs; };
   network-menu = pkgs.networkmanager_dmenu;
