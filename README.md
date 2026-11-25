@@ -22,6 +22,12 @@ when installation is ready. It builds the system and all custom packages, instal
 the managed user-profile packages, backs up and links the dotfiles, creates the
 screenshots directory, and activates NixOS. Python is supplied by pinned nixpkgs.
 A failed build stops before user configuration or system activation changes.
+Machine-private NixOS modules can be imported from
+`~/.config/nixos-config/local.nix`, outside this checkout. When present, this
+module is included by every build and activation entry point, including direct
+rebuilds of `hosts/nixos/configuration.nix`. Keep credentials in separate runtime
+files, never Nix expressions (which are copied into the Nix store). On a machine
+without this file, only the public desktop configuration is used.
 The installation phase is not atomic across system and user configuration:
 backups preserve replaced user files, and Nix retains previous generations.
 

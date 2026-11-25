@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -12,7 +12,8 @@
     ./appearance.nix
     ./windows-vm.nix
     ./openrazer.nix
-  ];
+  ] ++ lib.optional (builtins.pathExists /home/martin/.config/nixos-config/local.nix)
+    /home/martin/.config/nixos-config/local.nix;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
