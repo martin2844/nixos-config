@@ -1,0 +1,6 @@
+#!/run/current-system/sw/bin/bash
+set -euo pipefail
+# Use the current local build, refreshed by cmake --build out/linux.
+project="$HOME/Projects/juiced/openjuice-port"
+game="$HOME/Projects/juiced/game-data"
+exec "$project/out/linux/juiced" --game "$game" --creative-mods --mod-defaults "$project/mods" "$@"

@@ -1,0 +1,27 @@
+[Desktop Entry]
+Type=Application
+Name=OpenJuice
+Comment=Juiced native Linux engine
+Exec=/home/martin/.local/bin/openjuice
+TryExec=/home/martin/.local/bin/openjuice
+Icon=applications-games
+Terminal=false
+Categories=Game;SportsGame;
+Keywords=Juiced;Racing;Cars;
+Actions=InstantRace;Controls;Mods;Stock;
+
+[Desktop Action InstantRace]
+Name=Instant race
+Exec=/home/martin/.local/bin/openjuice -i
+
+[Desktop Action Controls]
+Name=Keyboard controls
+Exec=/home/martin/.local/bin/openjuice --controls
+
+[Desktop Action Mods]
+Name=Manage mods
+Exec=/home/martin/.local/bin/openjuice --mods-menu
+
+[Desktop Action Stock]
+Name=Play without mods
+Exec=/home/martin/.local/bin/openjuice --no-mods
