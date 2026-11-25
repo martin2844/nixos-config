@@ -20,6 +20,7 @@
   ".config/autostart": "home/.config/autostart",
   ".config/nvim": "home/.config/nvim",
   ".config/ghostty": "home/.config/ghostty",
+  ".local/share/applications/com.mitchellh.ghostty.desktop": "home/.local/share/applications/com.mitchellh.ghostty.desktop",
   ".config/rofi": "home/.config/rofi",
   ".config/swaync": "home/.config/swaync",
   ".config/networkmanager-dmenu": "home/.config/networkmanager-dmenu",
