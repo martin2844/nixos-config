@@ -7,7 +7,9 @@ import holidays
 def generate():
     result = {"first_year": 2020, "last_year": 2040, "dates": {}}
     def add(day, region, name):
-        result["dates"].setdefault(str(day), []).append({"region": region, "name": name})
+        entries = result["dates"].setdefault(str(day), [])
+        if not any(e["region"] == region and e["name"] == name for e in entries):
+            entries.append({"region": region, "name": name})
     for country, subdivision, region in [("ES", "CT", "cat"), ("AR", None, "ar"), ("US", None, "us")]:
         calendar = holidays.country_holidays(country, subdiv=subdivision,
             years=range(2020, 2041), language="en_US", observed=True)
@@ -17,6 +19,14 @@ def generate():
             if country == "AR":
                 name = name.replace("Maundy Thursday", "Maundy Thursday (optional non-working day)")
             add(day, region, name)
+    # Spain drops a national holiday from the working calendar when it falls on
+    # a Sunday and the region does not move it (SUN_TO_NONE). Keep the date
+    # itself, e.g. Constitution Day on Sunday 6 December 2026, because it is
+    # still a national holiday even though it creates no extra day off.
+    national = holidays.country_holidays("ES", years=range(2020, 2041),
+        language="en_US", observed=False)
+    for day, name in sorted(national.items()):
+        add(day, "cat", name)
     # Barcelona's two local public holidays are declared each year, not inferred.
     for year, whit in [(2026, "05-25"), (2027, "05-17")]:
         add(date.fromisoformat(f"{year}-{whit}"), "cat", "Barcelona: Whit Monday / Segona Pasqua")
