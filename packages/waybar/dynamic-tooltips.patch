@@ -1,0 +1,193 @@
+--- a/include/ALabel.hpp
++++ b/include/ALabel.hpp
+@@ -2,7 +2,10 @@
+ 
+ #include <glibmm/markup.h>
+ #include <gtkmm/label.h>
++#include <gtkmm/tooltip.h>
+ #include <json/json.h>
++
++#include <optional>
+ 
+ #include "AModule.hpp"
+ 
+@@ -28,9 +31,17 @@
+   bool handleToggle(GdkEventButton* const& e) override;
+   virtual std::string getState(uint8_t value, bool lesser = false);
+ 
++  bool setTooltipMarkup(const Glib::ustring& markup);
++  void setTooltipText(const Glib::ustring& text);
++
+   std::map<std::string, GtkMenuItem*> submenus_;
+   std::map<std::string, std::string> menuActionsMap_;
+   static void handleGtkMenuEvent(GtkMenuItem* menuitem, gpointer data);
++
++ private:
++  bool pointerOverModule() const;
++  std::optional<std::string> last_tooltip_markup_;
++  Glib::RefPtr<Gtk::Tooltip> active_tooltip_;
+ };
+ 
+ }  // namespace waybar
+--- a/src/ALabel.cpp
++++ b/src/ALabel.cpp
+@@ -35,6 +35,25 @@
+   }
+   label_.get_style_context()->add_class(MODULE_CLASS);
+   event_box_.add(label_);
++  if (tooltipEnabled()) {
++    // Setting tooltip-markup repeatedly resets GTK's display-wide hover timer.
++    // Supply cached content on query and refresh the visible card directly.
++    label_.set_has_tooltip(true);
++    label_.signal_query_tooltip().connect(
++        [this](int, int, bool, const Glib::RefPtr<Gtk::Tooltip>& tooltip) {
++          if (!last_tooltip_markup_.has_value() || last_tooltip_markup_->empty()) {
++            active_tooltip_.reset();
++            return false;
++          }
++          active_tooltip_ = tooltip;
++          tooltip->set_markup(*last_tooltip_markup_);
++          return true;
++        });
++    event_box_.signal_leave_notify_event().connect([this](GdkEventCrossing*) {
++      active_tooltip_.reset();
++      return false;
++    });
++  }
+   if (config_["max-length"].isUInt()) {
+     label_.set_max_width_chars(config_["max-length"].asInt());
+     label_.set_ellipsize(Pango::EllipsizeMode::ELLIPSIZE_END);
+@@ -128,6 +147,38 @@
+ }
+ 
+ auto ALabel::update() -> void { AModule::update(); }
++
++bool ALabel::pointerOverModule() const {
++  auto window = event_box_.get_window();
++  if (!window || !event_box_.get_mapped()) {
++    return false;
++  }
++  int x = 0;
++  int y = 0;
++  Gdk::ModifierType mask;
++  window->get_device_position(window->get_display()->get_default_seat()->get_pointer(), x, y, mask);
++  return x >= 0 && y >= 0 && x < window->get_width() && y < window->get_height();
++}
++
++bool ALabel::setTooltipMarkup(const Glib::ustring& markup) {
++  if (last_tooltip_markup_ == markup.raw()) {
++    return false;
++  }
++  last_tooltip_markup_ = markup.raw();
++  if (active_tooltip_) {
++    // GTK can reuse one tooltip object across adjacent modules without a leave event.
++    if (pointerOverModule()) {
++      active_tooltip_->set_markup(markup);
++    } else {
++      active_tooltip_.reset();
++    }
++  }
++  return true;
++}
++
++void ALabel::setTooltipText(const Glib::ustring& text) {
++  setTooltipMarkup(Glib::Markup::escape_text(text));
++}
+ 
+ std::string ALabel::getIcon(uint16_t percentage, const std::string& alt, uint16_t max) {
+   auto format_icons = config_["format-icons"];
+--- a/src/modules/custom.cpp
++++ b/src/modules/custom.cpp
+@@ -185,11 +185,11 @@
+             tooltip = fmt::format(
+                 fmt::runtime(tooltip), fmt::arg("text", text_), fmt::arg("alt", alt_),
+                 fmt::arg("icon", getIcon(percentage_, alt_)), fmt::arg("percentage", percentage_));
+-            label_.set_tooltip_markup(tooltip);
++            setTooltipMarkup(tooltip);
+           } else if (text_ == tooltip_) {
+-            label_.set_tooltip_markup(str);
++            setTooltipMarkup(str);
+           } else {
+-            label_.set_tooltip_markup(tooltip_);
++            setTooltipMarkup(tooltip_);
+           }
+         }
+         auto style = label_.get_style_context();
+--- a/src/modules/cpu.cpp
++++ b/src/modules/cpu.cpp
+@@ -27,7 +27,7 @@
+   auto [cpu_usage, tooltip] = CpuUsage::getCpuUsage(prev_times_);
+   auto [max_frequency, min_frequency, avg_frequency] = CpuFrequency::getCpuFrequency();
+   if (tooltipEnabled()) {
+-    label_.set_tooltip_text(tooltip);
++    setTooltipText(tooltip);
+   }
+   auto format = format_;
+   auto total_usage = cpu_usage.empty() ? 0 : cpu_usage[0];
+--- a/src/modules/memory/common.cpp
++++ b/src/modules/memory/common.cpp
+@@ -69,7 +69,7 @@
+     if (tooltipEnabled()) {
+       if (config_["tooltip-format"].isString()) {
+         auto tooltip_format = config_["tooltip-format"].asString();
+-        label_.set_tooltip_text(fmt::format(
++        setTooltipText(fmt::format(
+             fmt::runtime(tooltip_format), used_ram_percentage,
+             fmt::arg("total", total_ram_gigabytes), fmt::arg("swapTotal", total_swap_gigabytes),
+             fmt::arg("percentage", used_ram_percentage),
+@@ -78,7 +78,7 @@
+             fmt::arg("swapUsed", used_swap_gigabytes), fmt::arg("avail", available_ram_gigabytes),
+             fmt::arg("swapAvail", available_swap_gigabytes)));
+       } else {
+-        label_.set_tooltip_text(fmt::format("{:.{}f}GiB used", used_ram_gigabytes, 1));
++        setTooltipText(fmt::format("{:.{}f}GiB used", used_ram_gigabytes, 1));
+       }
+     }
+   } else {
+--- a/src/modules/bluetooth.cpp
++++ b/src/modules/bluetooth.cpp
+@@ -264,7 +264,7 @@
+         device_enumerate_.erase(0, 1);
+       }
+     }
+-    label_.set_tooltip_markup(fmt::format(
++    setTooltipMarkup(fmt::format(
+         fmt::runtime(tooltip_format), fmt::arg("status", state_),
+         fmt::arg("num_connections", connected_devices_.size()),
+         fmt::arg("controller_address", cur_controller_ ? cur_controller_->address : "null"),
+--- a/src/modules/pulseaudio.cpp
++++ b/src/modules/pulseaudio.cpp
+@@ -132,13 +132,13 @@
+       tooltip_format = config_["tooltip-format"].asString();
+     }
+     if (!tooltip_format.empty()) {
+-      label_.set_tooltip_markup(fmt::format(
++      setTooltipMarkup(fmt::format(
+           fmt::runtime(tooltip_format), fmt::arg("desc", sink_desc),
+           fmt::arg("volume", sink_volume), fmt::arg("format_source", format_source),
+           fmt::arg("source_volume", source_volume), fmt::arg("source_desc", source_desc),
+           fmt::arg("icon", getIcon(sink_volume, getPulseIcon()))));
+     } else {
+-      label_.set_tooltip_text(sink_desc);
++      setTooltipText(sink_desc);
+     }
+   }
+ 
+--- a/src/modules/hyprland/window.cpp
++++ b/src/modules/hyprland/window.cpp
+@@ -72,13 +72,13 @@
+       tooltip_format = config_["tooltip-format"].asString();
+     }
+     if (!tooltip_format.empty()) {
+-      label_.set_tooltip_text(
++      setTooltipText(
+           fmt::format(fmt::runtime(tooltip_format), fmt::arg("title", windowName),
+                       fmt::arg("initialTitle", windowData_.initial_title),
+                       fmt::arg("class", windowData_.class_name),
+                       fmt::arg("initialClass", windowData_.initial_class_name)));
+     } else if (!label_text.empty()) {
+-      label_.set_tooltip_text(label_text);
++      setTooltipText(label_text);
+     }
+   }
+ 

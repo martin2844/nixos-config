@@ -11,6 +11,7 @@
   ".zprofile": "home/.zprofile",
   ".config/hypr": "home/.config/hypr",
   ".config/waybar": "home/.config/waybar",
+  ".config/systemd/user/app-hypr\\x2dwaybar@autostart.service.d/restart.conf": "home/.config/systemd/user/app-hypr\\x2dwaybar@autostart.service.d/restart.conf",
   ".config/uwsm": "home/.config/uwsm",
   ".config/autostart": "home/.config/autostart",
   ".config/nvim": "home/.config/nvim",

@@ -17,6 +17,9 @@ comes from the server; its value can remain unchanged between queries.
 Right-clicking refreshes immediately using Waybar's `exec-on-event` behavior;
 left-clicking opens the installed ChatGPT desktop app.
 
+The [Waybar package](../waybar/) includes the shared hover-tooltip fix: refreshed
+JSON tooltip text no longer restarts GTK's hover timer across the bar.
+
 The click launcher explicitly uses `uwsm app -t service`, which returns after
 starting the app. Waybar's polling worker waits for click commands to exit;
 UWSM's default `scope` mode can hold that worker until ChatGPT closes, freezing

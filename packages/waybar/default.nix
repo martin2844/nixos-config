@@ -13,7 +13,9 @@ in pkgs.waybar.overrideAttrs (old: {
   patches = (old.patches or [ ]) ++ [
     ./tray-filter.patch
     ./hyprland-lua-workspaces.patch
+    ./hyprland-ipc-recovery.patch
     ./calendar.patch
+    ./dynamic-tooltips.patch
   ];
   postPatch = (old.postPatch or "") + ''
     cp ${./calendar/popup.hpp} include/modules/desktop_calendar.hpp
