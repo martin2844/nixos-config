@@ -2,6 +2,7 @@
   pkgs ? import ../../nix/pkgs.nix { },
 }:
 let
+  reminders = import ../calendar-reminders { inherit pkgs; };
   calendarPython = pkgs.python3.withPackages (ps: [ ps.holidays ]);
   calendarData = pkgs.runCommand "desktop-calendar-holidays.json" { } ''
     cp ${./calendar/generate.py} generate.py
@@ -19,6 +20,7 @@ in pkgs.waybar.overrideAttrs (old: {
   ];
   postPatch = (old.postPatch or "") + ''
     cp ${./calendar/popup.hpp} include/modules/desktop_calendar.hpp
+    substituteInPlace include/modules/desktop_calendar.hpp --replace-fail '@calendar-reminders@' '${reminders}/bin/calendar-reminders'
     substituteInPlace src/modules/clock.cpp --replace-fail '@calendar-data@' '${calendarData}'
   '';
 })

@@ -68,6 +68,15 @@ hl.window_rule({
 -- HyprMod managed settings, applied after the desktop defaults.
 require("hyprland-gui")
 
+-- Calendar day editor needs room for the list, time and notes fields.
+hl.window_rule({
+    name = "calendar-reminders",
+    match = { class = "^calendar-reminders$" },
+    float = true,
+    size = "640 680",
+    center = true,
+})
+
 -- Process manager opened from the CPU and RAM indicators.
 hl.window_rule({
     name = "system-monitor",

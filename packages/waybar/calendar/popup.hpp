@@ -22,12 +22,32 @@ class DesktopCalendar : public sigc::trackable {
   Gtk::Grid grid_;
   Gtk::Label title_, detail_, coverage_, legend_;
   Gtk::Button previous_{"‹"}, next_{"›"}, today_{"Today"}, close_{"×"};
-  Json::Value data_;
-  sigc::connection close_timer_, open_timer_;
+  Json::Value data_, reminders_{Json::arrayValue};
+  sigc::connection close_timer_, open_timer_, reminders_timer_;
   std::vector<sigc::connection> connections_;
   int year_ = 0, month_ = 0, cell_ = 64;
   bool over_clock_ = false, over_popup_ = false, pinned_ = false;
   std::string today_key_;
+
+  bool load_reminders() {
+    Json::Value document;
+    std::ifstream input(Glib::build_filename(Glib::get_user_data_dir(), "desktop-calendar", "reminders.json"));
+    try {
+      if (input && (!(input >> document) || !document["reminders"].isArray())) return false;
+    } catch (const std::exception&) { return false; }
+    Json::Value next = document.isNull() ? Json::Value(Json::arrayValue) : document["reminders"];
+    if (next == reminders_) return false;
+    reminders_ = std::move(next);
+    return true;
+  }
+  void edit_day(const std::string& date) {
+    try {
+      Glib::spawn_async("", std::vector<std::string>{"@calendar-reminders@", "edit", date});
+      popup_.hide();
+    } catch (const Glib::Error& error) {
+      detail_.set_text("Cannot open reminders: " + error.what());
+    }
+  }
 
   static std::tm now() {
     const auto stamp = std::time(nullptr);
@@ -82,6 +102,7 @@ class DesktopCalendar : public sigc::trackable {
     render();
   }
   void render() {
+    load_reminders();
     for (auto* child : grid_.get_children()) grid_.remove(*child);
     static const std::array<const char*, 12> months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     title_.set_text(std::string(months[month_ - 1]) + " " + std::to_string(year_));
@@ -114,10 +135,21 @@ class DesktopCalendar : public sigc::trackable {
         const auto region = entry["region"].asString();
         int index = region == "cat" ? 0 : region == "ar" ? 1 : 2;
         marked[index] = true;
-        const std::array<const char*, 3> regions = {"Catalunya / Barcelona", "Argentina", "USA (federal)"};
+        const std::array<const char*, 3> regions = {"Spain / Catalunya / Barcelona", "Argentina", "USA (federal)"};
         description += "\n" + std::string(regions[index]) + ": " + entry["name"].asString();
       }
       if (!marked[0] && !marked[1] && !marked[2]) description += "\nNo listed holidays";
+      bool has_reminders = false;
+      for (const auto& reminder : reminders_) {
+        if (!reminder.isObject() || !reminder["at"].isInt64() || !reminder["title"].isString()) continue;
+        const auto stamp = static_cast<std::time_t>(reminder["at"].asInt64());
+        std::tm local{};
+        if (!localtime_r(&stamp, &local) || key(local.tm_year + 1900, local.tm_mon + 1, local.tm_mday) != date_key) continue;
+        has_reminders = true;
+        std::ostringstream time;
+        time << std::put_time(&local, "%H:%M");
+        description += "\n• " + time.str() + " " + reminder["title"].asString();
+      }
       area->set_has_tooltip(true);
       area->set_can_focus(true);
       area->get_accessible()->set_name(description);
@@ -135,8 +167,15 @@ class DesktopCalendar : public sigc::trackable {
         area->unset_state_flags(Gtk::STATE_FLAG_PRELIGHT); area->queue_draw(); return false;
       });
       area->signal_focus_in_event().connect([this, description](GdkEventFocus*) { detail_.set_text(description); return false; });
-      area->signal_button_press_event().connect([this, description](GdkEventButton*) { detail_.set_text(description); return true; });
-      area->signal_draw().connect([area, day, marked, is_today, weekend = slot % 7 >= 5](const Cairo::RefPtr<Cairo::Context>& cr) {
+      area->signal_button_press_event().connect([this, date_key](GdkEventButton* event) {
+        if (event->button != 1) return false;
+        edit_day(date_key); return true;
+      });
+      area->signal_key_press_event().connect([this, date_key](GdkEventKey* event) {
+        if (event->keyval != GDK_KEY_Return && event->keyval != GDK_KEY_space) return false;
+        edit_day(date_key); return true;
+      });
+      area->signal_draw().connect([area, day, marked, is_today, has_reminders, weekend = slot % 7 >= 5](const Cairo::RefPtr<Cairo::Context>& cr) {
         const double width = area->get_allocated_width(), height = area->get_allocated_height();
         if ((area->get_state_flags() & Gtk::STATE_FLAG_PRELIGHT) != 0) {
           cr->set_source_rgba(0.60, 0.70, 0.85, 0.14); cr->rectangle(3, 3, width-6, height-6); cr->fill();
@@ -160,12 +199,16 @@ class DesktopCalendar : public sigc::trackable {
         int tw, th; layout->get_pixel_size(tw, th);
         cr->set_source_rgb(weekend && !is_today ? .67 : .92, weekend && !is_today ? .71 : .94, weekend && !is_today ? .78 : .98);
         cr->move_to((width-tw)/2, (height-th)/2); layout->show_in_cairo_context(cr);
+        if (has_reminders) {
+          cr->set_source_rgb(.45, .90, .68);
+          cr->arc(width / 2, height * .80, 3, 0, 6.283185307); cr->fill();
+        }
         return true;
       });
     }
     detail_.set_size_request(cell_ * 7, 90);
     detail_.set_max_width_chars(54);
-    detail_.set_text("Hover a day to see holidays\nClick the clock to keep the calendar open");
+    detail_.set_text("Hover a day for holidays and reminders\nClick a day to add or edit reminders");
     bool in_range = year_ >= data_.get("first_year", 2020).asInt() && year_ <= data_.get("last_year", 2040).asInt();
     coverage_.set_text(!in_range ? "Holiday data unavailable for this year" : year_ == 2026 ? "Barcelona local dates verified · 2026" : year_ == 2027 ? "Barcelona verified · Argentina special dates may change" : "Rule-based dates · Barcelona local dates not loaded");
     grid_.show_all();
@@ -188,7 +231,7 @@ class DesktopCalendar : public sigc::trackable {
     header_.pack_start(previous_, false, false); header_.pack_start(title_, true, true);
     header_.pack_start(next_, false, false); header_.pack_start(today_, false, false); header_.pack_start(close_, false, false);
     body_.pack_start(header_, false, false); body_.pack_start(grid_, false, false);
-    legend_.set_markup("<span foreground='#ff9e45'>■ Catalunya / Barcelona</span>   <span foreground='#6bcfff'>■ Argentina</span>   <span foreground='#c292ff'>■ USA</span>");
+    legend_.set_markup("<span foreground='#ff9e45'>■ Spain / Catalunya / Barcelona</span>   <span foreground='#6bcfff'>■ Argentina</span>   <span foreground='#c292ff'>■ USA</span>\n<span foreground='#73e6ad'>● Reminders</span>");
     body_.pack_start(legend_, false, false);
     detail_.set_line_wrap(true); detail_.set_xalign(0); detail_.set_yalign(0);
     body_.pack_start(detail_, false, false); body_.pack_start(coverage_, false, false);
@@ -223,6 +266,10 @@ class DesktopCalendar : public sigc::trackable {
       if (pinned_) open(); else popup_.hide();
       return true;
     }, false));
+    reminders_timer_ = Glib::signal_timeout().connect([this] {
+      if (popup_.get_visible() && load_reminders()) render();
+      return true;
+    }, 1000);
   }
   void refresh_today() {
     if (!popup_.get_visible()) return;
@@ -230,7 +277,7 @@ class DesktopCalendar : public sigc::trackable {
     if (today_key_ != key(t.tm_year + 1900, t.tm_mon + 1, t.tm_mday)) render();
   }
   ~DesktopCalendar() {
-    open_timer_.disconnect(); close_timer_.disconnect();
+    open_timer_.disconnect(); close_timer_.disconnect(); reminders_timer_.disconnect();
     for (auto& connection : connections_) connection.disconnect();
   }
 };

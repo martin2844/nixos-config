@@ -17,6 +17,7 @@ in
   wallpaper-tools = import ./packages/wallpaper-tools { inherit pkgs; };
   desktop-controls = import ./packages/desktop-controls { inherit pkgs; };
   waybar = import ./packages/waybar { inherit pkgs; };
+  calendar-reminders = import ./packages/calendar-reminders { inherit pkgs; };
   network-menu = pkgs.networkmanager_dmenu;
   hyprmod = import ./packages/hyprmod { inherit pkgs; };
   screenshot-preview = import ./packages/screenshot-preview { inherit pkgs; };

@@ -51,6 +51,10 @@ part of Git. After first activation, reconnect the receiver if access is denied.
   Ediloco. Both appear in the Super+Space application launcher. Service sources,
   launchers and restore scripts are tracked; credentials and media stay outside Git.
 
+- [Calendar reminders](packages/calendar-reminders/): click a day in the Waybar
+  calendar to add or edit a reminder. A user timer sends desktop notifications,
+  including overdue reminders after login. Personal data stays outside Git.
+
 - [Codex usage indicator](packages/codex-usage/): Waybar shows the remaining
   Codex allowance and available resets, with renewal and expiry dates in the
   tooltip. Installed by the user-package installer; uses your Codex CLI login.

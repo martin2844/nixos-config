@@ -1,0 +1,9 @@
+[Unit]
+Description=Deliver due calendar reminders
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.nix-profile/bin/calendar-reminders tick
+TimeoutStartSec=120
